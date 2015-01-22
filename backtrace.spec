@@ -42,7 +42,7 @@
 %define target_doc_dir /usr/share/doc/%{name}
 
 # TODO: Give your summary
-Summary:        Implementation of basical functionnality in c like a logger a module of parallelization
+Summary:    backtrace library extracted from GCC. 
 Name:		%{name}
 Version:	%{version}
 Release:	%{release}
@@ -59,9 +59,9 @@ Distribution:	Bull HPC
 
 # Automatically filled in by PDP: it should not appear therefore!
 #Vendor:         Bull
-License:        GPL
+License:        BSD
 BuildArch:	x86_64
-URL:	 	https://novahpc.frec.bull.fr
+URL:	 	https://github.com/gcc-mirror/gcc/tree/master/libbacktrace
 
 #TODO: What do you provide
 Provides: %{name}
@@ -70,7 +70,7 @@ Provides: %{name}
 
 #TODO: Give a description (seen by rpm -qi) (No more than 80 characters)
 %description
-Basic C modules including the high performance BXI logging library. 
+Backtrace library extracted from GCC. 
 
 ###############################################################################
 # Prepare the files to be compiled
