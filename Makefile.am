@@ -1,7 +1,6 @@
-
-ACLOCAL_AMFLAGS="-I ./.autotools_cache/m4"
-
 SUBDIRS=packaged
+
+ACLOCAL_AMFLAGS=-I .autotools_cache/m4
 
 
 current_makefile=$(lastword $(MAKEFILE_LIST))
