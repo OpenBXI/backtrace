@@ -234,7 +234,7 @@ if test "${multilib}" = "yes"; then
 else
   multilib_arg=
 fi
-AC_CONFIG_FILES([Makefile packaged/Makefile packaged/backtrace-supported.h])
+AC_CONFIG_FILES([Makefile packaged/Makefile packaged/backtrace-supported.h tests/Makefile])
 AC_OUTPUT
 
 echo "summary   :"
