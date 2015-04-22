@@ -78,7 +78,7 @@ Backtrace library extracted from GCC.
 #%setup -q -n %{name}
 test "x$RPM_BUILD_ROOT" != "x" && rm -rf $RPM_BUILD_ROOT
 %setup
-%configure 
+%configure --disable-debug
 
 ###############################################################################
 # The current directory is the one main directory of the tar
