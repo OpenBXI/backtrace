@@ -31,6 +31,9 @@
 
 
 AM_CFLAGS = $(EXTRA_FLAGS) $(WARN_FLAGS) $(PIC_FLAG) -I $(srcdir)/include -I $(top_builddir)
+EXTRA_DIST=include/dwarf2.h\
+		   include/dwarf2.def\
+		   include/filenames.h
 
 lib_LTLIBRARIES = lib/libbacktrace.la
 
