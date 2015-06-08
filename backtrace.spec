@@ -40,6 +40,7 @@
 %define target_python_lib_dir %{python2_sitelib}
 %define target_man_dir %{_mandir}
 %define target_doc_dir /usr/share/doc/%{name}
+Prefix: /usr
 
 # TODO: Give your summary
 Summary:    backtrace library extracted from GCC. 
