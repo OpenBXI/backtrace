@@ -29,9 +29,6 @@
 # IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-SUBSIRS=\
-		doc
-
 AM_CFLAGS = $(EXTRA_FLAGS) $(WARN_FLAGS) $(PIC_FLAG) -I $(srcdir)/include -I $(top_builddir)
 EXTRA_DIST=include/dwarf2.h\
 		   include/dwarf2.def\
