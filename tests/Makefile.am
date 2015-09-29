@@ -4,4 +4,4 @@ all-local:
 
 check-local:
 	PYTHONPATH=${abs_top_builddir}/packaged/lib/:$${PYTHONPATH} \
-		nosetests -w ${abs_top_srcdir} ${NOSETESTS_ARGS}
+		nosetests -v -w ${abs_top_srcdir} ${NOSETESTS_ARGS}
