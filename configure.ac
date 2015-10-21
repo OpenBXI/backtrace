@@ -10,6 +10,7 @@ AC_CONFIG_AUX_DIR([.autotools_cache])
 AM_INIT_AUTOMAKE([foreign subdir-objects])
 AC_CONFIG_MACRO_DIR([.autotools_cache/m4])
 AC_CONFIG_HEADERS([template_config.h])
+AC_CONFIG_FILES([template_version.py])
 AC_CONFIG_SRCDIR([packaged/src/backtrace.c])
 
 # Checks for programs.
