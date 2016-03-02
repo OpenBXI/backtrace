@@ -240,6 +240,7 @@ SUBPACKAGES="debuginfo"
 AC_SUBST([SUBPACKAGES])
 AC_BXIEXTRA_DIST=""
 AC_SUBST([AC_BXIEXTRA_DIST])
+#CFLAGS="$CFLAGS -D_GNU_SOURCE"
 AC_CONFIG_FILES([Makefile packaged/Makefile packaged/backtrace-supported.h tests/Makefile])
 AC_OUTPUT
 
