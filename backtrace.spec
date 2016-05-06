@@ -73,6 +73,12 @@ Provides: %{name}
 %description
 Backtrace library extracted from GCC. 
 
+%package devel
+Summary: Header files providing the library API
+#TODO: Give a description (seen by rpm -qi) (No more than 80 characters)
+%description devel
+Header files providing the library API
+
 ###############################################################################
 # Prepare the files to be compiled
 %prep
@@ -117,9 +123,10 @@ test "x$RPM_BUILD_ROOT" != "x" && rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root)
 #%{_libdir}/lib*
-%{_includedir}/*.h
 %{target_lib_dir}/lib*
 
+%files devel
+%{_includedir}/*.h
 
 
 #%config(noreplace) %{target_conf_dir}/my.conf

@@ -236,7 +236,7 @@ if test "${multilib}" = "yes"; then
 else
   multilib_arg=
 fi
-SUBPACKAGES="debuginfo"
+SUBPACKAGES="debuginfo devel"
 AC_SUBST([SUBPACKAGES])
 AC_BXIEXTRA_DIST=""
 AC_SUBST([AC_BXIEXTRA_DIST])
