@@ -68,6 +68,8 @@ URL:	 	https://github.com/gcc-mirror/gcc/tree/master/libbacktrace
 Provides: %{name}
 #Conflicts:
 #TODO: What do you require
+BuildRequires: gcc
+buildRequires: gcc-c++
 
 #TODO: Give a description (seen by rpm -qi) (No more than 80 characters)
 %description
