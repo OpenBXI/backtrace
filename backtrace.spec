@@ -108,6 +108,7 @@ test "x$RPM_BUILD_ROOT" != "x" && rm -rf $RPM_BUILD_ROOT
 %{__make} install DESTDIR=$RPM_BUILD_ROOT  %{?mflags_install}
 mkdir -p $RPM_BUILD_ROOT/%{target_doc_dir}
 cp ChangeLog $RPM_BUILD_ROOT/%{target_doc_dir}
+rm -f $RPM_BUILD_ROOT/%{target_lib_dir}/lib*.la
 
 
 %post
