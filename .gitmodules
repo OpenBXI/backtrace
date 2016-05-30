@@ -1,0 +1,4 @@
+[submodule "shared"]
+	path = misc/shared
+	url = https://forge.bxi.hl/code/BXI_FM/shared.git
+	branch = master
