@@ -37,7 +37,7 @@
 %define target_conf_dir /etc/
 %define target_bin_dir /usr/bin
 %define target_lib_dir /usr/lib*
-%define target_python_lib_dir %{python2_sitelib}
+%define target_python_lib_dir %{python2_sitearch}
 %define target_man_dir %{_mandir}
 %define target_doc_dir /usr/share/doc/%{name}
 Prefix: /usr
