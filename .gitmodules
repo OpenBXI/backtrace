@@ -1,4 +1,4 @@
 [submodule "shared"]
-    path = misc/shared
-    url = ../shared.git
-    branch = master
+	path = misc/shared
+	url = ../shared.git
+	branch = master
