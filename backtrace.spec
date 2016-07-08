@@ -17,7 +17,7 @@
 # and to understand the SVN tagging process.
 # If you don't care, then, just starts with Bull.1.0%{?dist}.%{?revision}snapshot
 # and run 'make tag' when you want to tag.
-%define release Bull.2.0%{?dist}.%{?revision}snapshot
+%define release Bull.3.0%{?dist}.%{?revision}snapshot
 
 # Warning: Bull's continuous compilation tools refuse the use of
 # %release in the src_dir variable!
@@ -43,7 +43,7 @@
 Prefix: /usr
 
 # TODO: Give your summary
-Summary:    backtrace library extracted from GCC. 
+Summary:    backtrace library extracted from GCC.
 Name:		%{name}
 Version:	%{version}
 Release:	%{release}
@@ -62,7 +62,7 @@ Distribution:	Bull HPC
 #Vendor:         Bull
 License:        BSD
 BuildArch:	x86_64
-URL:	 	https://github.com/gcc-mirror/gcc/tree/master/libbacktrace
+URL:            https://github.com/gcc-mirror/gcc/tree/master/libbacktrace
 
 #TODO: What do you provide
 Provides: %{name}
@@ -73,7 +73,7 @@ buildRequires: gcc-c++
 
 #TODO: Give a description (seen by rpm -qi) (No more than 80 characters)
 %description
-Backtrace library extracted from GCC. 
+Backtrace library extracted from GCC.
 
 %package devel
 Summary: Header files providing the library API
@@ -154,4 +154,3 @@ test "x$RPM_BUILD_ROOT" != "x" && rm -rf $RPM_BUILD_ROOT
 ## Do not add anything after the following line!
 ##################################################
 %changelog
-
