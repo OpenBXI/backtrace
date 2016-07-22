@@ -1,0 +1,76 @@
+{
+   <CUNIT_with_fork1>
+   Memcheck:Leak
+   fun:malloc
+   fun:CU_create_new_registry
+   fun:CU_initialize_registry
+   fun:main
+}
+{
+   <CUNIT_with_fork2>
+   Memcheck:Leak
+   fun:malloc
+   fun:CU_add_suite
+   fun:main
+}
+{
+   <CUNIT_with_fork3>
+   Memcheck:Leak
+   fun:malloc
+   fun:__fopen_internal
+   fun:CU_automated_run_tests
+   fun:main
+}
+{
+   <CUNIT_addtest>
+   Memcheck:Leak
+   ...
+   fun:CU_add_test
+   ...
+}
+{
+   <CUNIT_ASSERT>
+   Memcheck:Leak
+   ...
+   fun:CU_assertImplementation
+   ...
+}
+{
+   <socketcall_sendto>
+   Memcheck:Param
+   socketcall.sendto(msg)
+   fun:send
+   ...
+}
+{
+   <socketcall_sendto>
+   Memcheck:Param
+   socketcall.send(msg)
+   fun:send
+   ...
+}
+{
+   <false_positive_backtrace>
+   Memcheck:Leak
+   fun:malloc
+   fun:bxistr_vnew
+   fun:bxistr_new
+   fun:_bt_full_cb
+   fun:report_inlined_functions
+   fun:dwarf_lookup_pc
+   fun:dwarf_fileline
+   fun:backtrace_pcinfo
+   fun:bxierr_backtrace_str
+   fun:bxierr_new
+   fun:bxierr_vfromidx
+   fun:bxierr_fromidx
+}
+{
+   <can_t_resolve_properly_sigalt_stack_malloc>
+   Memcheck:Leak
+   fun:calloc
+   fun:bximem_calloc
+   fun:bxilog_install_sighandler
+   ...
+}
+
