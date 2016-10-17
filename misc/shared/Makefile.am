@@ -115,6 +115,11 @@ ChangeLog:
 	touch $(top_builddir)/ChangeLog
 
 generate_rpm:svnversion log
+	NB=$$(rpmspec -q $(specfile) | grep snapshot | wc -l);\
+	if test $${NB} -gt 0; then \
+		echo "Snapshot version detected in specfile! Check your versionning!" >&2;\
+		exit 1;\
+	fi
 	make -C $(top_builddir) dist
 	mkdir -p $(sourcedir)
 	rm -f $(sourcedir)/$(tarall)
@@ -128,6 +133,11 @@ generate_rpm:svnversion log
 	cp $(rpm) archives/
 
 generate_devrpm:svnversion ChangeLog
+	NB=$$(rpmspec -q $(specfile) | grep snapshot | wc -l);\
+	if test $${NB} -eq 0; then\
+		echo "No mention to snapshot version in specfile! Check your versionning!" >&2;\
+		exit 1;\
+	fi
 	make -C $(top_builddir) dist
 	mkdir -p $(sourcedir)
 	rm -f $(sourcedir)/$(tarall)
