@@ -28,6 +28,9 @@
 # {%_mandir} => normally /usr/share/man (depends on the PDP)
 # %{perl_vendorlib} => /usr/lib/perl5/vendor_perl/
 
+Prefix: /etc
+Prefix: /usr
+
 # Other custom variables
 %define src_conf_dir conf
 %define src_bin_dir bin
