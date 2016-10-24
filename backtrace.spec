@@ -81,6 +81,7 @@ Backtrace library extracted from GCC.
 %package devel
 Summary: Header files providing the library API
 Requires: %{name}
+
 #TODO: Give a description (seen by rpm -qi) (No more than 80 characters)
 %description devel
 Header files providing the library API
