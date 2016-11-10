@@ -9,7 +9,7 @@ endif
 EXTRA_DIST=\
 		   valgrind.supp\
 		   custom-test-driver\
-		   svnversion\
+		   vcsversion\
 		   ${PACKAGE_NAME}.spec\
 		   ChangeLog\
 		   misc/shared/doxypypy.py\
@@ -18,7 +18,7 @@ EXTRA_DIST=\
 
 ACLOCAL_AMFLAGS=-I .autotools_cache/m4
 
-TEST_REVISION=$(shell $(top_srcdir)/check_svnrevision.sh $(top_srcdir) $(top_builddir))
+TEST_REVISION=$(shell $(top_srcdir)/check_vcsrevision.sh $(top_srcdir) $(top_builddir))
 
 current_makefile=$(lastword $(MAKEFILE_LIST))
 rpm_topdir=$(shell rpm --eval="%_topdir")
@@ -105,8 +105,7 @@ doc:
 	fi
 
 # Create the ChangeLog file and add changelog entries to the RPM .spec file.
-# This step requires the 'svn2cl' tool.
-# It is available here: http://arthurdejong.org/svn2cl/downloads.html
+
 log:
 	git -C $(top_srcdir) --no-pager log --format="%ai %aN %n%n%x09* %s%d%n" > $(top_builddir)/ChangeLog
 
@@ -114,7 +113,7 @@ log:
 ChangeLog:
 	touch $(top_builddir)/ChangeLog
 
-generate_rpm:svnversion log
+generate_rpm:vcsversion log
 	NB=$$(rpmspec -q $(specfile) | grep snapshot | wc -l);\
 	if test $${NB} -gt 0; then \
 		echo "Snapshot version detected in specfile! Check your versionning!" >&2;\
@@ -132,7 +131,7 @@ generate_rpm:svnversion log
 	cp $(srpm) archives/;\
 	cp $(rpm) archives/
 
-generate_devrpm:svnversion ChangeLog
+generate_devrpm:vcsversion ChangeLog
 	NB=$$(rpmspec -q $(specfile) | grep snapshot | wc -l);\
 	if test $${NB} -eq 0; then\
 		echo "No mention to snapshot version in specfile! Check your versionning!" >&2;\
@@ -181,10 +180,10 @@ tag: clean
 		echo "Please install it!";\
 		echo "For that purpose, I suggest you do something like:";\
 		echo ;\
-		echo "mkdir ~/.local/bull-exc-svn ~/.local/bin";\
-		echo "cd ~/.local/bull-exc-svn";\
+		echo "mkdir ~/.local/bull-exc-vcs ~/.local/bin";\
+		echo "cd ~/.local/bull-exc-vcs";\
 		echo "svn checkout https://nfbpshpc.frec.bull.fr:443/svn/hpcbxi/devtools/trunk devtools";\
-		echo "ln -sf ~/.local/bull-exc-svn/devtools/bin/* ~/.local/bin/";\
+		echo "ln -sf ~/.local/bull-exc-vcs/devtools/bin/* ~/.local/bin/";\
 		echo "export PATH=~/.local/bin:\$PATH";\
 		echo ;\
 		echo "Enjoy! ;-)";\
@@ -212,10 +211,10 @@ release:
 		echo "Please install it!";\
 		echo "For that purpose, I suggest you do something like:";\
 		echo ;\
-		echo "mkdir ~/.local/bull-exc-svn ~/.local/bin";\
-		echo "cd ~/.local/bull-exc-svn";\
+		echo "mkdir ~/.local/bull-exc-vcs ~/.local/bin";\
+		echo "cd ~/.local/bull-exc-vcs";\
 		echo "svn checkout https://nfbpshpc.frec.bull.fr:443/svn/hpcbxi/devtools/trunk devtools";\
-		echo "ln -sf ~/.local/bull-exc-svn/devtools/bin/* ~/.local/bin/";\
+		echo "ln -sf ~/.local/bull-exc-vcs/devtools/bin/* ~/.local/bin/";\
 		echo "export PATH=~/.local/bin:\$PATH";\
 		echo ;\
 		echo "Enjoy! ;-)";\
@@ -226,18 +225,18 @@ release:
 BUILT_SOURCES=config.h version.py
 CLEANFILES=config.h version.py
 
-version.py:svnversion template_version.py
+version.py:vcsversion template_version.py
 	cp template_version.py $@
-	SVNVERSION=`sed 's/.*: //' $<`;\
-	echo "SVNVERSION = \"$$SVNVERSION\"" >> $@
+	VCSVERSION=`sed 's/.*: //' $<`;\
+	echo "VCSVERSION = \"$$VCSVERSION\"" >> $@
 
-config.h:svnversion template_config.h
+config.h:vcsversion template_config.h
 	cp template_config.h $@
-	SVNVERSION=`sed 's/.*: //' $<`;\
-	echo "#define SVNVERSION \"$$SVNVERSION\"" >> $@
+	VCSVERSION=`sed 's/.*: //' $<`;\
+	echo "#define VCSVERSION \"$$VCSVERSION\"" >> $@
 
 
-svnversion: ${TEST_REVISION}
+vcsversion: ${TEST_REVISION}
 	if ! test -e $(top_srcdir)/$@; then \
 		BRANCH=$$(git -C $(top_srcdir) symbolic-ref HEAD 2> /dev/null | cut -b 12-);\
 		LOG=$$(git -C $(top_srcdir) log --pretty=format:'%H, %ad' --date=iso -1);\
@@ -250,4 +249,4 @@ svnversion: ${TEST_REVISION}
 		echo "$${BRANCH}-$${LOG} $${ST}" >> $@;\
 	fi
 
-dist:svnversion
+dist:vcsversion

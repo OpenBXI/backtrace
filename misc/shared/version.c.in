@@ -1,10 +1,10 @@
 /* -*- coding: utf-8 -*-
 ###############################################################################
-# Author:  Quintin Jean-Noël <jean-noel.quintin@bull.net>
+# Author:  Quintin Jean-Noël <jean-noel.quintin@atos.net>
 # Created on: 2015-03-20
 # Contributors:
 ###############################################################################
-# Copyright (C) 2015  Bull S. A. S.  -  All rights reserved
+# Copyright (C) 2015 - 2016  Bull S. A. S.  -  All rights reserved
 # Bull, Rue Jean Jaures, B.P.68, 78340, Les Clayes-sous-Bois
 # This is not Free or Open Source software.
 # Please contact Bull S. A. S. for details about its license.
@@ -34,11 +34,10 @@
 // ********************************** Implementation           *********************
 // *********************************************************************************
 
-const char * const @PACKAGE@_version = "@PACKAGE_NAME@-@PACKAGE_VERSION@  git version: " SVNVERSION;
+const char * const @PACKAGE@_version = "@PACKAGE_NAME@-@PACKAGE_VERSION@  git version: " VCSVERSION;
 
-const char * const @PACKAGE@_bug_address = "<pierre.vigneras@bull.net>";
+const char * const @PACKAGE@_bug_address = "<pierre.vigneras@atos.net>";
 
 // *********************************************************************************
 // ********************************** Static Functions Implementation  *************
 // *********************************************************************************
-
