@@ -852,6 +852,9 @@ def main():
     # Switch to generic versions to strip the BOM automatically.
     if sampleBytes.startswith(BOM_UTF8):
         encoding = 'UTF-8-SIG'
+
+    if encoding is None:
+        sysExit(-1)
     if encoding.startswith("UTF-16"):
         encoding = "UTF-16"
     if encoding.startswith("UTF-32"):

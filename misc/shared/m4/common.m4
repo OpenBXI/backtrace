@@ -31,29 +31,80 @@ define([ADD_BXISYSTEMD],[
        AM_CONDITIONAL([HAVE_SYSTEMD], [test "x$with_systemdsysdir" != "xno"])
        ])
 
-define([INIT_BXIPRODUCT],[
-    AC_CONFIG_MACRO_DIR([.autotools_cache/m4])
-    AC_CONFIG_AUX_DIR([.autotools_cache])
-    AC_CONFIG_HEADERS([template_config.h])
-    AC_CONFIG_FILES([template_version.py])
-    AM_INIT_AUTOMAKE([foreign subdir-objects])
+define([INIT_BXIPRODUCT], [
+	AC_CONFIG_MACRO_DIR([.autotools_cache/m4])
+	AC_CONFIG_AUX_DIR([.autotools_cache])
+	AC_CONFIG_HEADERS([template_config.h])
+	AC_CONFIG_FILES([template_version.py])
+	AM_INIT_AUTOMAKE([foreign subdir-objects])
 
-    if test "$2" == "systemd"; then
-    ADD_BXISYSTEMD
-    else
-    AM_CONDITIONAL([HAVE_SYSTEMD], [test "xyes" = "xno"])
-    fi
+	if test "$2" == "systemd"
+	then
+		ADD_BXISYSTEMD
+	else
+		AM_CONDITIONAL([HAVE_SYSTEMD], [test "xyes" = "xno"])
+	fi
 
-    AC_CHECK_PROGS([DOXYGEN], [doxygen])
-    if test -z "$DOXYGEN"; then
-        AC_MSG_WARN([Doxygen not found - continuing without Doxygen support])
-    fi
-    AC_CHECK_PROGS([DOT], [dot])
-    if test -z "$DOT"; then
-        AC_MSG_WARN([dot (graphviz) not found - continuing without dot support - The documentation will not be generated])
-    fi
-    AC_SUBST([BXIDOC_FOLDER])
-    ])
+	AC_CHECK_PROGS([DOXYGEN], [doxygen])
+	if test -z "$DOXYGEN"
+	then
+		AC_MSG_WARN([Doxygen not found - continuing without Doxygen support])
+	fi
+	AC_CHECK_PROGS([DOT], [dot])
+	if test -z "$DOT"
+	then
+		AC_MSG_WARN(
+			[dot (graphviz) not found - continuing without dot support -
+			 The documentation will not be generated]
+		)
+	fi
+	AC_SUBST([BXIDOC_FOLDER])
+
+	AC_ARG_WITH(
+		[tagfiles-prefix],
+		[AS_HELP_STRING(
+			[--with-tagfiles-prefix=DIR],
+			[Directory containing the dependencies' doc install (containing their tagfiles)]
+		 )],
+		,
+		[with_tagfiles_prefix=/usr/share/doc]
+	)
+	AC_SUBST([tagfiles_prefix], [$with_tagfiles_prefix])
+
+	AC_ARG_WITH(
+		[tagfiles-suffix],
+		[AS_HELP_STRING(
+			[--with-tagfiles-suffix=DIR],
+			[Path within dependencies' doc install containing tagfiles]
+		 )],
+		,
+		[with_tagfiles_suffix=last/doxygen.tag]
+	)
+	AC_SUBST([tagfiles_suffix], [$with_tagfiles_suffix])
+
+	AC_ARG_WITH(
+		[htmldirs-prefix],
+		[AS_HELP_STRING(
+			[--with-htmldirs-prefix=DIR],
+			[Directory containing the dependencies' doc install
+			 (containing html dirs)]
+		 )],
+		,
+		[with_htmldirs_prefix=/usr/share/doc]
+	)
+	AC_SUBST([htmldirs_prefix], [$with_htmldirs_prefix])
+
+	AC_ARG_WITH(
+		[htmldirs-suffix],
+		[AS_HELP_STRING(
+			[--with-htmldirs-suffix=DIR],
+			[Path within dependencies' doc install containing html dir]
+		 )],
+		,
+		[with_htmldirs_suffix=last/html/])
+
+	AC_SUBST([htmldirs_suffix], [$with_htmldirs_suffix])
+])
 
 define([DEFAULT_BXIOPTION],[
 ###########################

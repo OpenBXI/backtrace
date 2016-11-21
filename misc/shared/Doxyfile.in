@@ -348,7 +348,7 @@ SUBGROUPING            = YES
 # SEPARATE_MEMBER_PAGES.
 # The default value is: NO.
 
-INLINE_GROUPED_CLASSES = NO
+INLINE_GROUPED_CLASSES = YES
 
 # When the INLINE_SIMPLE_STRUCTS tag is set to YES, structs, classes, and unions
 # with only public data fields or simple typedef fields will be shown inline in
@@ -2287,7 +2287,6 @@ GENERATE_LEGEND        = YES
 DOT_CLEANUP            = YES
 
 @INCLUDE = @abs_top_builddir@/packaged/doc/Doxyfile_specific
-
 
 # To enable image within documentation, one must add to Doxyfile_specific.in
 # IMAGE_PATH             = @top_srcdir@/packaged/doc/img/
