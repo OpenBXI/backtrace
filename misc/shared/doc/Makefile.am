@@ -5,15 +5,17 @@ TAGFILEPATT = $(tagfiles_prefix)/\1/$(tagfiles_suffix)
 HTMLDIRPATT = $(htmldirs_prefix)/\1/$(htmldirs_suffix)
 # If the prefixes or suffixes contain a `#`, this will break.
 
-.SECONDARY: doxygen.tag
-doxygen.tag:
+doxydir= $(docdir)/$(PACKAGE_VERSION)/
+doxy_DATA = doxygen.tag
+.SECONDARY: $(doxy_DATA)
+$(doxy_DATA): gen_doxydeps.sh
 	@echo "Creating Doxyfile_specific_tagfiles"
 	DOCSREQUIRED=$$(\
 		grep '^BuildRequires:.*-doc' \
 			"$(top_srcdir)/$(PACKAGE_NAME).spec" | \
 		grep -o "[^: \t]*-doc" | \
 		sed "s#\(.*\)-doc#$(TAGFILEPATT)=$(HTMLDIRPATT)#") ; \
-	./gen_doxydeps.sh Doxyfile_specific_tagfiles $$DOCSREQUIRED
+	$(srcdir)/gen_doxydeps.sh Doxyfile_specific_tagfiles $$DOCSREQUIRED
 	$(DOXYGEN) Doxyfile
 	if test $$(cat doxygen.warn | wc -l) -ne 0; \
 	then \
@@ -34,18 +36,20 @@ check_doc:
 endif
 
 
-$(docpkg): doxygen.tag
+$(docpkg): $(doxy_DATA)
 	cd html && tar czf ../$@ .
 
-doc: doxygen.tag
+doc: $(doxy_DATA)
 	mkdir -p img
 
-all-local: doxygen.tag check_doc
+all-local: $(doxy_DATA) check_doc
 
 clean-local:
 	rm -rf html doxygen.warn latex
 
-doc_DATA = $(docpkg) doxygen.tag
+doc_DATA = $(docpkg)
+
+
 
 install-data-hook:
 	test -e $(DESTDIR)$(docdir)/$(PACKAGE_VERSION)/ \
@@ -61,8 +65,10 @@ install-data-hook:
 uninstall-local:
 	cd $(DESTDIR)$(docdir)/ && rm -rf $(PACKAGE_VERSION)
 
-CLEANFILES = $(doc_DATA)
+CLEANFILES = $(doc_DATA) $(doxy_DATA)
 endif
 
-EXTRA_DIST = README.md
+EXTRA_DIST =\
+			README.md\
+			gen_doxydeps.sh
 
