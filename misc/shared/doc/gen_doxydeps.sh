@@ -61,6 +61,10 @@ then
     # Output help and exit before breaking stuff
     printf "Usage: gen_doxydeps.sh DOXYCONF "
     printf "PATH/TO/TAGFILE1 [ PATH/TO/TAGFILE2 ... ]\n\n"
+    if test $1
+    then
+        touch $1
+    fi
     exit
 fi
 
