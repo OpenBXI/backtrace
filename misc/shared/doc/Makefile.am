@@ -5,17 +5,24 @@ TAGFILEPATT = $(tagfiles_prefix)/\1/$(tagfiles_suffix)
 HTMLDIRPATT = $(htmldirs_prefix)/\1/$(htmldirs_suffix)
 # If the prefixes or suffixes contain a `#`, this will break.
 
-doxydir= $(docdir)/$(PACKAGE_VERSION)/
+#grep '^BuildRequires:.*-doc' "../../../$(PACKAGE_NAME).spec"
+#grep '^BuildRequires:.*-doc' "../../../$(PACKAGE_NAME).spec" | \
+#	grep -o "[^: \t]*-doc"
+#grep '^BuildRequires:.*-doc' "../../../$(PACKAGE_NAME).spec" | \
+#	grep -o "[^: \t]*-doc" | \
+#	sed "s#\(.*\)-doc#$(TAGFILEPATT)=$(HTMLDIRPATT)#")
+
+doxydir = $(docdir)/$(PACKAGE_VERSION)/
 doxy_DATA = doxygen.tag
 .SECONDARY: $(doxy_DATA)
 $(doxy_DATA): gen_doxydeps.sh
 	@echo "Creating Doxyfile_specific_tagfiles"
-	DOCSREQUIRED=$$(\
+	DOCSREQUIRED=$( \
 		grep '^BuildRequires:.*-doc' \
-			"$(top_srcdir)/$(PACKAGE_NAME).spec" | \
+			"../../../$(PACKAGE_NAME).spec" | \
 		grep -o "[^: \t]*-doc" | \
 		sed "s#\(.*\)-doc#$(TAGFILEPATT)=$(HTMLDIRPATT)#") ; \
-	$(srcdir)/gen_doxydeps.sh Doxyfile_specific_tagfiles $$DOCSREQUIRED
+	$(srcdir)/gen_doxydeps.sh Doxyfile_specific_tagfiles ${DOCSREQUIRED}
 	$(DOXYGEN) Doxyfile
 	if test $$(cat doxygen.warn | wc -l) -ne 0; \
 	then \
@@ -35,7 +42,6 @@ check_doc:
 	echo "No check of the documentation"
 endif
 
-
 $(docpkg): $(doxy_DATA)
 	cd html && tar czf ../$@ .
 
@@ -48,8 +54,6 @@ clean-local:
 	rm -rf html doxygen.warn latex
 
 doc_DATA = $(docpkg)
-
-
 
 install-data-hook:
 	test -e $(DESTDIR)$(docdir)/$(PACKAGE_VERSION)/ \

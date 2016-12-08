@@ -2286,7 +2286,10 @@ GENERATE_LEGEND        = YES
 
 DOT_CLEANUP            = YES
 
+GENERATE_TAGFILE = @abs_top_builddir@/packaged/doc/doxygen.tag
+
 @INCLUDE = @abs_top_builddir@/packaged/doc/Doxyfile_specific
+@INCLUDE = @abs_top_builddir@/packaged/doc/Doxyfile_specific_tagfiles
 
 # To enable image within documentation, one must add to Doxyfile_specific.in
 # IMAGE_PATH             = @top_srcdir@/packaged/doc/img/
