@@ -17,9 +17,9 @@ doxy_DATA = doxygen.tag
 .SECONDARY: $(doxy_DATA)
 $(doxy_DATA): gen_doxydeps.sh
 	@echo "Creating Doxyfile_specific_tagfiles"
-	DOCSREQUIRED=$( \
+	DOCSREQUIRED=$(shell \
 		grep '^BuildRequires:.*-doc' \
-			"../../../$(PACKAGE_NAME).spec" | \
+			"$(abs_top_srcdir)/$(PACKAGE_NAME).spec" | \
 		grep -o "[^: \t]*-doc" | \
 		sed "s#\(.*\)-doc#$(TAGFILEPATT)=$(HTMLDIRPATT)#") ; \
 	$(srcdir)/gen_doxydeps.sh Doxyfile_specific_tagfiles ${DOCSREQUIRED}
