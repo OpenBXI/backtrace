@@ -22,7 +22,7 @@ $(doxy_DATA): gen_doxydeps.sh
 			"$(abs_top_srcdir)/$(PACKAGE_NAME).spec" | \
 		grep -o "[^: \t]*-doc" | \
 		sed "s#\(.*\)-doc#$(TAGFILEPATT)=$(HTMLDIRPATT)#") ; \
-	$(srcdir)/gen_doxydeps.sh Doxyfile_specific_tagfiles ${DOCSREQUIRED}
+	$(srcdir)/gen_doxydeps.sh Doxyfile_specific_tagfiles $${DOCSREQUIRED}
 	$(DOXYGEN) Doxyfile
 	if test $$(cat doxygen.warn | wc -l) -ne 0; \
 	then \
