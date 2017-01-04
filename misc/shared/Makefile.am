@@ -135,7 +135,7 @@ generate_devrpm:vcsversion ChangeLog
 	NB=$$(rpmspec -q $(specfile) | grep snapshot | wc -l);\
 	if test $${NB} -eq 0; then\
 		echo "No mention to snapshot version in specfile! Check your versionning!" >&2;\
-		sleep 5; \
+		sleep 5;\
 	fi
 	make -C $(top_builddir) dist
 	mkdir -p $(sourcedir)
