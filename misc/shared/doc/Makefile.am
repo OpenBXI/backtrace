@@ -74,4 +74,5 @@ endif
 
 EXTRA_DIST =\
 			README.md\
-			gen_doxydeps.sh
+			gen_doxydeps.sh\
+			img
