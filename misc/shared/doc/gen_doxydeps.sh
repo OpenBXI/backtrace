@@ -99,18 +99,17 @@ fi
 #rm -f $DOXYCONF
 for ARG in "${ARGS[@]}"
 do
-    # @TODO: Resolve symlinks ?
     TAGFILE="$(echo "$ARG" | sed 's/[ \t]*=[^=]*$//')"
     HTMLDIR="$(echo "$ARG" | sed 's/^[^=]*=[ \t]*//')"
     # If TAGFILE is relative, compute it relative to DOXYDIR
-    echo "$TAGFILE" | grep -o "^." | grep -q "/" || \
-        TAGFILE="$(realpath --relative-to="$DOXYDIR" "$TAGFILE")"
+    echo "$TAGFILE" | grep -q "^/" \
+    || TAGFILE="$( \
+        realpath \
+            --no-symlink \
+            --relative-to="$DOXYDIR" \
+            "$TAGFILE")"
     # @TODO: CHECK WHETHER IT WORKS ONCE RPM IS INSTALLED
     #        @SEEALSO THIS SCRIPT'S TOP DOC
-    #        MAYBE USE --relative-to=SERVER-ROOT-PATH
-    # If HTMLDIR is relative, compute it relative to DOXYDIR/html
-    echo "$HTMLDIR" | grep -o "^." | grep -q "/" || \
-        HTMLDIR="$(realpath --relative-to="$DOXYDIR/html/" "$HTMLDIR")"
     # Compute path to dep's doc output, relative to current doc output
     echo "TAGFILES += \"$TAGFILE \\" >> "$DOXYCONF"
     echo "           = $HTMLDIR\""   >> "$DOXYCONF"
