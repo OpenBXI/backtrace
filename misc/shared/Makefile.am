@@ -113,49 +113,68 @@ log:
 ChangeLog:
 	touch $(top_builddir)/ChangeLog
 
-generate_rpm:vcsversion log
-	NB=$$(rpmspec -q $(specfile) | grep snapshot | wc -l);\
-	if test $${NB} -gt 0; then \
-		echo "Snapshot version detected in specfile! Check your versionning!" >&2;\
-		sleep 5;\
+generate_rpm: vcsversion log
+	NB=$$(rpmspec -q $(specfile) | grep snapshot | wc -l) ; \
+	if test $${NB} -gt 0 ; \
+	then \
+		echo "Snapshot version detected in specfile! Check your versioning!" >&2 ; \
+		sleep 5 ; \
 	fi
 	make -C $(top_builddir) dist
 	mkdir -p $(sourcedir)
 	rm -f $(sourcedir)/$(tarall)
 	cp ${DIST_ARCHIVES} $(sourcedir)/$(tarall)
-	rpmbuild -bb -v --define='checkdoc --enable-check-doc' $(specfile) && echo "INFO: rpmbuild -bb -> OK";\
-	rpmbuild -bs -v --define='checkdoc --enable-check-doc' $(specfile) && echo "INFO: rpmbuild -bs -> OK";\
-	if test -f archives ; then rm -f archives ; mkdir -p archives ; fi;\
-	if test ! -d archives ; then mkdir -p archives ; fi;\
-	cp $(sub_rpms) archives || echo "no subpackage found";\
-	cp $(srpm) archives/;\
-	cp $(rpm) archives/
+	rpmbuild -bb -v \
+		--define="checkdoc --enable-check-doc" \
+		--define "bxi_build_dir $${BXI_BUILD_DIR}" \
+		--define "bxi_build_subdir $${BXI_BUILD_SUBDIR}" $(specfile) \
+	&& echo "INFO: rpmbuild -bb -> OK" ; \
+	rpmbuild -bs -v \
+		--define="checkdoc --enable-check-doc" \
+		--define "bxi_build_dir $${BXI_BUILD_DIR}" \
+		--define "bxi_build_subdir $${BXI_BUILD_SUBDIR}" $(specfile) \
+	&& echo "INFO: rpmbuild -bs -> OK" ; \
+	test -f archives && ( rm -f archives ; mkdir -p archives ) ; \
+	test -d archives || mkdir -p archives ; \
+	cp $(sub_rpms) archives || echo "some subpackage not found" ; \
+	cp $(srpm) archives/ ; \
+	cp $(rpm) archives/ ;
 
-generate_devrpm:vcsversion ChangeLog
-	NB=$$(rpmspec -q $(specfile) | grep snapshot | wc -l);\
-	if test $${NB} -eq 0; then\
-		echo "No mention to snapshot version in specfile! Check your versionning!" >&2;\
-		sleep 5;\
+generate_devrpm: vcsversion ChangeLog
+	NB=$$(rpmspec -q $(specfile) | grep snapshot | wc -l) ; \
+	if test $${NB} -eq 0 ; \
+	then \
+		echo "No mention to snapshot version in specfile! Check your versioning!" >&2 ; \
+		sleep 5 ; \
 	fi
 	make -C $(top_builddir) dist
 	mkdir -p $(sourcedir)
 	rm -f $(sourcedir)/$(tarall)
 	cp ${DIST_ARCHIVES} $(sourcedir)/$(tarall)
-	MODIF=$$(git -C ${top_srcdir} status -s | grep -v "??" | wc -l);\
-	if test "$${MODIF}" != 0;  then \
-		ST="M";\
-	else\
-		ST="";\
-	fi;\
-	revision=$$(echo $$(git -C $(top_srcdir) log --pretty=format:'%ad' --date=raw -1 | sed 's/ .*$$/'"$${ST}"'/'));\
-	rpmbuild --nodeps -bb -v --define="revision $${revision}." $(specfile) && echo "INFO: rpmbuild -bb -> OK";\
-	rpmbuild --nodeps -bs -v --define="revision $${revision}." $(specfile) && echo "INFO: rpmbuild -bs -> OK";\
-	if test -f archives ; then rm -f archives ; mkdir -p archives ; fi;\
-	if test ! -d archives ; then mkdir -p archives ; fi;\
-	echo  "revision: $${revision}";\
-	cp $(sub_rpms) archives || echo "some subpackage not found";\
-	cp $(srpm) archives/;\
-	cp $(rpm) archives/;
+	MODIF=$$(git -C ${top_srcdir} status -s | grep -v "??" | wc -l) ; \
+	test "$${MODIF}" == 0 && ST="" || ST="M" ; \
+	revision=$$(
+		echo $$(
+			git -C $(top_srcdir) log \
+				--pretty=format:'%ad' \
+				--date=raw -1 \
+			| sed 's/ .*$$/'"$${ST}"'/')) ; \
+	rpmbuild --nodeps -bb -v \
+		--define="revision $${revision}." \
+		--define "bxi_build_dir $${BXI_BUILD_DIR}" \
+		--define "bxi_build_subdir $${BXI_BUILD_SUBDIR}" $(specfile) \
+	&& echo "INFO: rpmbuild -bb -> OK" ; \
+	rpmbuild --nodeps -bs -v \
+		--define="revision $${revision}." \
+		--define "bxi_build_dir $${BXI_BUILD_DIR}" \
+		--define "bxi_build_subdir $${BXI_BUILD_SUBDIR}" $(specfile) \
+	&& echo "INFO: rpmbuild -bs -> OK" ; \
+	test -f archives && ( rm -f archives ; mkdir -p archives ) ; \
+	test -d archives || mkdir -p archives ; \
+	echo  "revision: $${revision}" ; \
+	cp $(sub_rpms) archives || echo "some subpackage not found" ; \
+	cp $(srpm) archives/ ; \
+	cp $(rpm) archives/ ;
 
 # This target speed up the build process: it does not generate the
 # changelog file. use only for development.
