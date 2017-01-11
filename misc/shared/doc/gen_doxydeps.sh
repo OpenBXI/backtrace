@@ -82,7 +82,7 @@ do
             --relative-to="$DOXYDIR" \
             "$TAGFILE")"
     # Remove duplicate slashes, but don't interpret / canonicalize
-    HTMLDIR="(echo "$HTMLDIR" | sed "s#//\+#/#g")"
+    HTMLDIR="$(echo "$HTMLDIR" | sed "s#//\+#/#g")"
     # Compute path to dep's doc output, relative to current doc output
     echo "TAGFILES += \"$TAGFILE \\" >> "$DOXYCONF"
     echo "           = $HTMLDIR\""   >> "$DOXYCONF"
