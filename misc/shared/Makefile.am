@@ -152,7 +152,7 @@ generate_devrpm: vcsversion ChangeLog
 	rm -f $(sourcedir)/$(tarall)
 	cp ${DIST_ARCHIVES} $(sourcedir)/$(tarall)
 	MODIF=$$(git -C ${top_srcdir} status -s | grep -v "??" | wc -l) ; \
-	test "$${MODIF}" == 0 && ST="" || ST="M" ; \
+	test "$${MODIF}" -eq 0 && ST="" || ST="M" ; \
 	revision=$$( \
 		echo $$( \
 			git -C $(top_srcdir) log \
