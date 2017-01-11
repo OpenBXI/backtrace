@@ -117,8 +117,10 @@ generate_rpm: vcsversion log
 	NB=$$(rpmspec -q $(specfile) | grep snapshot | wc -l) ; \
 	if test $${NB} -gt 0 ; \
 	then \
-		echo "Snapshot version detected in specfile! Check your versioning!" >&2 ; \
+		echo "Snapshot version detected in specfile!" \
+		     "Check your versioning!" >&2 ; \
 		sleep 5 ; \
+		sed 's/\.%{?revision}snapshot/%{?revision}snapshot/' -i $(specfile) ;\
 	fi
 	make -C $(top_builddir) dist
 	mkdir -p $(sourcedir)
@@ -144,7 +146,8 @@ generate_devrpm: vcsversion ChangeLog
 	NB=$$(rpmspec -q $(specfile) | grep snapshot | wc -l) ; \
 	if test $${NB} -eq 0 ; \
 	then \
-		echo "No mention to snapshot version in specfile! Check your versioning!" >&2 ; \
+		echo "No mention to snapshot version in specfile!" \
+		     "Check your versioning!" >&2 ; \
 		sleep 5 ; \
 	fi
 	make -C $(top_builddir) dist
