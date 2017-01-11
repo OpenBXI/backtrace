@@ -118,6 +118,7 @@ generate_rpm:vcsversion log
 	if test $${NB} -gt 0; then \
 		echo "Snapshot version detected in specfile! Check your versionning!" >&2;\
 		sleep 5;\
+		sed 's/\.%{?revision}snapshot/%{?revision}snapshot/' -i $(specfile) ;\
 	fi
 	make -C $(top_builddir) dist
 	mkdir -p $(sourcedir)
