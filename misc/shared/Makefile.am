@@ -268,7 +268,7 @@ vcsversion: ${TEST_REVISION}
 		else\
 			ST="";\
 		fi; \
-		echo "$${BRANCH}-$${LOG} $${ST}" >> $@;\
+		echo "$${BRANCH}-$${LOG} $${ST}" > $@;\
 	fi
 
 dist:vcsversion
