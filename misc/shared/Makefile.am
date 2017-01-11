@@ -120,19 +120,28 @@ generate_rpm: vcsversion log
 		echo "Snapshot version detected in specfile!" \
 		     "Check your versioning!" >&2 ; \
 		sleep 5 ; \
-		sed 's/\.%{?revision}snapshot/%{?revision}snapshot/' -i $(specfile) ;\
 	fi
 	make -C $(top_builddir) dist
 	mkdir -p $(sourcedir)
 	rm -f $(sourcedir)/$(tarall)
 	cp ${DIST_ARCHIVES} $(sourcedir)/$(tarall)
+	MODIF=$$(git -C ${top_srcdir} status -s | grep -v "??" | wc -l) ; \
+	test "$${MODIF}" -eq 0 && ST="" || ST="M" ; \
+	revision=$$( \
+		echo $$( \
+			git -C $(top_srcdir) log \
+				--pretty=format:'%ad' \
+				--date=raw -1 \
+			| sed 's/ .*$$/'"$${ST}"'/')) ; \
 	rpmbuild -bb -v \
 		--define="checkdoc --enable-check-doc" \
+		--define="revision $${revision}." \
 		--define "bxi_build_dir $${BXI_BUILD_DIR}" \
 		--define "bxi_build_subdir $${BXI_BUILD_SUBDIR}" $(specfile) \
 	&& echo "INFO: rpmbuild -bb -> OK" ; \
 	rpmbuild -bs -v \
 		--define="checkdoc --enable-check-doc" \
+		--define="revision $${revision}." \
 		--define "bxi_build_dir $${BXI_BUILD_DIR}" \
 		--define "bxi_build_subdir $${BXI_BUILD_SUBDIR}" $(specfile) \
 	&& echo "INFO: rpmbuild -bs -> OK" ; \
