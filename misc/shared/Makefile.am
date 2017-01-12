@@ -119,7 +119,6 @@ generate_rpm: vcsversion log
 	then \
 		echo "Snapshot version detected in specfile!" \
 		     "Check your versioning!" >&2 ; \
-		sleep 5 ; \
 	fi
 	make -C $(top_builddir) dist
 	mkdir -p $(sourcedir)
@@ -157,7 +156,6 @@ generate_devrpm: vcsversion ChangeLog
 	then \
 		echo "No mention to snapshot version in specfile!" \
 		     "Check your versioning!" >&2 ; \
-		sleep 5 ; \
 	fi
 	make -C $(top_builddir) dist
 	mkdir -p $(sourcedir)
