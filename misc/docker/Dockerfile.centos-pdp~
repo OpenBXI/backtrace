@@ -1,0 +1,82 @@
+FROM local/centos-epel:latest
+
+MAINTAINER "Pierre Vignéras" <pierre.vigneras@atos.net>
+
+# Install required dependencies
+# KEEP IT SORTED
+RUN yum -y install \
+    asciidoc \
+    autoconf \
+    automake \
+    createrepo \
+    CUnit-devel \
+    curl-devel \
+    doxygen \
+    expat-devel \
+    gcc \
+    gcc-c++ \
+    gettext \
+    git \
+    libtool \
+    make \
+    net-snmp-devel \
+    net-snmp-libs \
+    python \
+    python-cffi \
+    rpm-build \
+    sudo \
+    xmlto \
+    zeromq \
+    zeromq-devel
+
+
+# Install git from source and generate the rpm
+RUN cd /tmp && git clone https://github.com/git/git.git && \ 
+    cd /tmp/git && git checkout v2.7.3 && make -j rpm
+
+# Remove the install git, so we install the version we want
+RUN yum -y remove git-all git && yum clean packages
+
+# Create the yum repo
+RUN cd ~/rpmbuild/RPMS/x86_64 && createrepo . && \
+    echo $'[local] \n\
+name=Git-Local \n\
+baseurl=file:///root/rpmbuild/RPMS/x86_64 \n\
+enabled=1 \n\
+gpgcheck=0 \n\
+protect=1 \n'\
+> /etc/yum.repos.d/local.repo
+
+# Install git
+RUN yum -y install git
+
+# Remove useless packages
+RUN yum -y remove $(package-cleanup -q --leaves)
+
+# Create the user
+RUN useradd -u 1000 -g users -G wheel -m fantom && \
+    echo $'%perl_vendorlib /usr/share/perl5/ \n\
+%python2_sitelib /usr/lib/python2.7/site-packages \n\
+%python2_sitearch /usr/lib64/python2.7/site-packages \n\
+%debug_package %{nil} \n\
+%_topdir /rpms \n\
+%systemd_dir /usr/lib/systemd/system \n'\
+> /home/fantom/.rpmmacros
+
+# Trust the wheel groop by default for su
+RUN sed -i '/^#auth.*pam_wheel.so.*trust /s/^#//' /etc/pam.d/su
+
+
+#RUN echo $'source /mnt/bxienv -r /tmp' >> /home/fantom/.bashrc
+
+WORKDIR /home/fantom
+USER fantom
+
+
+
+
+
+
+
+
+

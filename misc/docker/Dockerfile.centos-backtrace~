@@ -1,0 +1,16 @@
+FROM local/centos-pdp:latest
+MAINTAINER "Pierre Vignéras" <pierre.vigneras@atos.net>
+
+ADD RPMS /rpms
+
+RUN     echo $'[local] \n\
+name=Local \n\
+baseurl=file:///rpms/x86_64 \n\
+enabled=1 \n\
+gpgcheck=0 \n\
+protect=1 \n'\
+> /etc/yum.repos.d/local.repo
+
+
+RUN yum -y install backtrace backtrace-devel backtrace-doc backtrace-tests
+
