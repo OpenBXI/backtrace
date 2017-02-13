@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if test $# -lt 1;then
+   >&2 echo "Usage: %(basename $0) product [product, ..., product]"
+   exit 1
+fi
+
+for file in $*;do 
+    /home/fantom/scripts/mkrpm ${file}
+done
+

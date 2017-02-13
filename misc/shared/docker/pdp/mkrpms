@@ -1,0 +1,163 @@
+#!/bin/bash
+
+###############################################################################
+# Author: Pierre Vignéras <pierre.vigneras@atos.net>
+# Contributor: Sébastien Miquée <sebastien.miquee@atos.net>
+# Copyright (C) 2016 - 2017  Bull S.A.S.  -  All rights reserved
+# This is not Free or Open Source software.
+# Please contact Bull SAS for details about its license.
+###############################################################################
+
+
+# Reading configuration file
+CONF=${HOME}/.config/mkrpms.conf
+
+if [ ! -f "${CONF}" ]
+then
+    >&2 echo "Configuration file ${CONF} is mandatory."
+    exit 1
+fi
+
+source "${CONF}"
+
+# Checking environment variables setup
+if [ -z "${SRC_DIR}" ]
+then
+    echo "Please define SRC_DIR variable in ${CONF}" >&2
+    exit 1
+fi
+
+if [ -z "${RPMS_DIR}" ]
+then
+    echo "Please define RPMS_DIR variable in ${CONF}" >&2
+    exit 1
+fi
+
+if [ -z "${TMP_DIR}" ]
+then
+    echo "Please define TMP_DIR variable in ${CONF}" >&2
+    exit 1
+fi
+
+
+# Checking paths to exist and with the correct rights
+### SRC
+if [ ! -d "${SRC_DIR}" ]
+then
+    echo "${SRC_DIR} is not valid!" >&2
+    exit 1
+fi
+
+if [ ! -d "${SRC_DIR}/hpcbxi" ]
+then
+    echo "${SRC_DIR}/hpcbxi does not exist!" >&2
+    exit 1
+fi
+
+if [ ! -d "${SRC_DIR}/bxi-headers-generator" ]
+then
+    echo "${SRC_DIR}/bxi-headers-generator does not exist!" >&2
+    exit 1
+fi
+
+### Build
+if [ ! -d "${RPMS_DIR}" ]
+then
+    echo "${RPMS_DIR} does not exist!" >&2
+    echo " => Creating ${RPMS_DIR}"
+    mkdir -p "${RPMS_DIR}"
+fi
+
+# Write acces to pdp fantom user with 1000
+if [ "$(id -u)" -ne 1000 ]
+then
+    chmod a+w "${RPMS_DIR}"
+    if [ ${?} -ne 0 ]
+    then
+        exit 1
+    fi
+fi
+
+### Temp / internal
+if [ ! -d "${TMP_DIR}" ]
+then
+    echo "${TPM_DIR} does not exist!" >&2
+    echo " => Creating ${TMP_DIR}"
+    mkdir -p "${TMP_DIR}"
+fi
+
+# Write acces to pdp fantom user with 1000
+if [ "$(id -u)" -ne 1000 ]
+then
+    chmod a+w "${TMP_DIR}"
+    if [ ${?} -ne 0 ]
+    then
+        exit 1
+    fi
+fi
+
+
+###########################################################################
+###########################################################################
+# That's all what you have to configure
+###########################################################################
+###########################################################################
+
+
+if [ ${#} -lt 2 ]
+then
+    >&2 echo "Usage: $(basename ${0}) docker-images-pdp product [product ... product]"
+    exit 1
+fi
+
+if ! which docker > /dev/null; then
+    >&2 echo "docker is required, install it: https://docs.docker.com/engine/installation/"
+    exit 1;
+fi
+
+
+if ! docker version > /dev/null; then
+    >&2 echo "docker daemon has not been started?"
+    exit 1;
+fi
+
+PDP=$1
+shift
+PDP_IMAGE=$(docker images -q ${PDP})
+
+if [ -z "${PDP_IMAGE}" ]
+then
+    echo "PDP_IMAGE not found, please make it"
+    exit 1
+fi
+
+
+## Use this one if you want the container to be removed after the command
+CMD="docker run \
+    --rm \
+    --name pdp \
+    --hostname pdp \
+    --volume ${SRC_DIR}:/mnt:ro \
+    --volume ${RPMS_DIR}:/rpms \
+    --volume ${TMP_DIR}:/tmp \
+    --tty \
+    --interactive \
+    --user fantom \
+    ${PDP}  \
+    /bin/bash -li /home/fantom/scripts/mkrpms ${@}"
+
+# CMD="docker run \
+#     --name pdp \
+#     --hostname pdp \
+#     --volume ${SRC_DIR}:/mnt:ro \
+#     --volume ${RPMS_DIR}:/rpms \
+#     --tty \
+#     --interactive \
+#     --user fantom \
+#     local/rhel-pdp \
+#     /bin/bash -li /home/fantom/scripts/mkrpms $*"
+
+
+echo "Launching: $CMD"
+
+$CMD

@@ -1,0 +1,14 @@
+FROM centos:latest
+MAINTAINER "Pierre Vignéras" <pierre.vigneras@atos.net>
+
+ENV http_proxy ${HTTP_PROXY}
+ENV https_proxy ${HTTPS_PROXY}
+ENV ftp_proxy ${FTP_PROXY}
+ENV no_proxy ${NO_PROXY}
+
+RUN sed -i 's/enabled=1/enabled=0/' /etc/yum/pluginconf.d/fastestmirror.conf
+
+RUN rpm -iUvh http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-9.noarch.rpm && yum --assumeyes update 
+
+CMD ["/bin/bash"]
+

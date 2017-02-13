@@ -1,0 +1,17 @@
+#!/bin/bash
+
+if test $# -ne 1;then
+   >&2 echo "Usage: %(basename $0) product"
+   exit 1
+fi
+
+# Required to expand aliases (so bximake is known)
+#shopt -s expand_aliases
+#source /mnt/hpcbxi/bxienv -r /tmp
+#BXI_PDP_MODE="true" RPM_INSTALL_OPT="--relocate /etc=/tmp/etc --relocate /usr=/tmp/usr" make --jobs --no-print-directory --directory /mnt/hpcbxi $1.pdp 
+# Hack to prevent top_build_subdir error during rpm generation (Ask John if you don't get why! ;-))
+export BXI_BUILD_SUBDIR="/"
+BXI_PDP_MODE="true" make --jobs --no-print-directory --directory /mnt/hpcbxi $1.pdp 
+
+#&& \ su -c "createrepo --update /rpms && yum clean metadata && yum -y install $1-devel"
+
