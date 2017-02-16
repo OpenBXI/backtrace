@@ -5,7 +5,7 @@ TARGET_DOCKER_DIR = /tmp/backtrace.docker
 
 backtrace: 
 	echo "Building backtrace rpm"
-	${PWD}/../shared/docker/pdp/mkrpms backtrace
+	${PWD}/../shared/docker/pdp/mkrpms local/centos-pdp
 	echo "Copying backtrace rpm"
 	mkdir -p ${TARGET_DOCKER_DIR}/RPMS/x86_64
 	cp Dockerfile.centos-backtrace ${TARGET_DOCKER_DIR}

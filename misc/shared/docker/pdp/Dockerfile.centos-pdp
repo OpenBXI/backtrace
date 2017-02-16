@@ -79,9 +79,7 @@ protect=1 \n'\
 
 
 # Create the user fantom environment
-RUN echo $'export BXILL_HEADERS=/mnt/bxi-headers-generator/ \n\
-source /mnt/hpcbxi/bxienv -r /tmp \n\
-export PATH=/home/fantom/scripts:$PATH \n\
+RUN echo $'export PATH=/home/fantom/scripts:$PATH \n\
 ' >> /home/fantom/.bashrc
 
 ADD scripts /home/fantom/scripts

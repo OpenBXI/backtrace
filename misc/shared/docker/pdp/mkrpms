@@ -21,11 +21,6 @@ fi
 source "${CONF}"
 
 # Checking environment variables setup
-if [ -z "${SRC_DIR}" ]
-then
-    echo "Please define SRC_DIR variable in ${CONF}" >&2
-    exit 1
-fi
 
 if [ -z "${RPMS_DIR}" ]
 then
@@ -41,24 +36,6 @@ fi
 
 
 # Checking paths to exist and with the correct rights
-### SRC
-if [ ! -d "${SRC_DIR}" ]
-then
-    echo "${SRC_DIR} is not valid!" >&2
-    exit 1
-fi
-
-if [ ! -d "${SRC_DIR}/hpcbxi" ]
-then
-    echo "${SRC_DIR}/hpcbxi does not exist!" >&2
-    exit 1
-fi
-
-if [ ! -d "${SRC_DIR}/bxi-headers-generator" ]
-then
-    echo "${SRC_DIR}/bxi-headers-generator does not exist!" >&2
-    exit 1
-fi
 
 ### Build
 if [ ! -d "${RPMS_DIR}" ]
@@ -104,9 +81,9 @@ fi
 ###########################################################################
 
 
-if [ ${#} -lt 2 ]
+if [ ${#} -lt 1 ]
 then
-    >&2 echo "Usage: $(basename ${0}) docker-images-pdp product [product ... product]"
+    >&2 echo "Usage: $(basename ${0}) docker-images-pdp"
     exit 1
 fi
 
@@ -137,14 +114,14 @@ CMD="docker run \
     --rm \
     --name pdp \
     --hostname pdp \
-    --volume ${SRC_DIR}:/mnt:ro \
+    --volume $(readlink -f ../../):/mnt:ro \
     --volume ${RPMS_DIR}:/rpms \
     --volume ${TMP_DIR}:/tmp \
     --tty \
     --interactive \
     --user fantom \
     ${PDP}  \
-    /bin/bash -li /home/fantom/scripts/mkrpms ${@}"
+    /bin/bash -li /home/fantom/scripts/mkrpm"
 
 # CMD="docker run \
 #     --name pdp \
