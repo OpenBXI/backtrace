@@ -10,6 +10,7 @@ EXTRA_DIST=\
 		   valgrind.supp\
 		   custom-test-driver\
 		   vcsversion\
+		   check_vcsrevision.sh\
 		   ${PACKAGE_NAME}.spec\
 		   ChangeLog\
 		   misc/shared/doxypypy.py\
