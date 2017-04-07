@@ -133,17 +133,23 @@ generate_rpm: vcsversion log
 				--pretty=format:'%ad' \
 				--date=raw -1 \
 			| sed 's/ .*$$/'"$${ST}"'/')) ; \
+	if test "$${BXI_BUILD_SUBDIR}" = ""; \
+	then\
+		export BUILD_SUBDIR='%{nil}';\
+	else\
+		export BUILD_SUBDIR=$${BXI_BUILD_SUBDIR};\
+	fi;\
 	rpmbuild -bb -v \
 		--define="checkdoc --enable-check-doc" \
 		--define="revision $${revision}." \
 		--define "bxi_build_dir $${BXI_BUILD_DIR}" \
-		--define "bxi_build_subdir $${BXI_BUILD_SUBDIR}" $(specfile) \
+		--define "bxi_build_subdir $${BUILD_SUBDIR}" $(specfile) \
 	&& echo "INFO: rpmbuild -bb -> OK" ; \
 	rpmbuild -bs -v \
 		--define="checkdoc --enable-check-doc" \
 		--define="revision $${revision}." \
 		--define "bxi_build_dir $${BXI_BUILD_DIR}" \
-		--define "bxi_build_subdir $${BXI_BUILD_SUBDIR}" $(specfile) \
+		--define "bxi_build_subdir $${BUILD_SUBDIR}" $(specfile) \
 	&& echo "INFO: rpmbuild -bs -> OK" ; \
 	test -f archives && ( rm -f archives ; mkdir -p archives ) ; \
 	test -d archives || mkdir -p archives ; \
@@ -170,15 +176,21 @@ generate_devrpm: vcsversion ChangeLog
 				--pretty=format:'%ad' \
 				--date=raw -1 \
 			| sed 's/ .*$$/'"$${ST}"'/')) ; \
+	if test "$${BXI_BUILD_SUBDIR}" = ""; \
+	then\
+		export BUILD_SUBDIR='%{nil}';\
+	else\
+		export BUILD_SUBDIR=$${BXI_BUILD_SUBDIR};\
+	fi;\
 	rpmbuild --nodeps -bb -v \
 		--define="revision $${revision}." \
 		--define "bxi_build_dir $${BXI_BUILD_DIR}" \
-		--define "bxi_build_subdir $${BXI_BUILD_SUBDIR}" $(specfile) \
+		--define "bxi_build_subdir $${BUILD_SUBDIR}" $(specfile) \
 	&& echo "INFO: rpmbuild -bb -> OK" ; \
 	rpmbuild --nodeps -bs -v \
 		--define="revision $${revision}." \
 		--define "bxi_build_dir $${BXI_BUILD_DIR}" \
-		--define "bxi_build_subdir $${BXI_BUILD_SUBDIR}" $(specfile) \
+		--define "bxi_build_subdir $${BUILD_SUBDIR}" $(specfile) \
 	&& echo "INFO: rpmbuild -bs -> OK" ; \
 	test -f archives && ( rm -f archives ; mkdir -p archives ) ; \
 	test -d archives || mkdir -p archives ; \
