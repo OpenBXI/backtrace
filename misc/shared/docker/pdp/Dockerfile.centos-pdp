@@ -1,4 +1,4 @@
-FROM local/centos-epel:latest
+FROM openbxi/centos-epel:latest
 
 MAINTAINER "Pierre Vignéras" <pierre.vigneras@atos.net>
 
@@ -39,13 +39,13 @@ RUN yum -y remove git-all git && yum clean packages
 
 # Create the yum repo
 RUN cd ~/rpmbuild/RPMS/x86_64 && createrepo . && \
-    echo $'[local] \n\
+    echo $'[openbxi] \n\
 name=Git-Local \n\
 baseurl=file:///root/rpmbuild/RPMS/x86_64 \n\
 enabled=1 \n\
 gpgcheck=0 \n\
 protect=1 \n'\
-> /etc/yum.repos.d/local.repo
+> /etc/yum.repos.d/openbxi.repo
 
 # Install git
 RUN yum -y install git
@@ -68,14 +68,14 @@ RUN sed -i '/^#auth.*pam_wheel.so.*trust /s/^#//' /etc/pam.d/su && \
     echo '%wheel ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
 
 
-# Create the local yum repo
-RUN echo $'[local] \n\
+# Create the openbxi yum repo
+RUN echo $'[openbxi] \n\
 name=Local \n\
 baseurl=file:///rpms \n\
 enabled=1 \n\
 gpgcheck=0 \n\
 protect=1 \n'\
-> /etc/yum.repos.d/local.repo
+> /etc/yum.repos.d/openbxi.repo
 
 
 # Create the user fantom environment
