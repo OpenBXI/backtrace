@@ -1,4 +1,4 @@
-FROM local/centos-pdp:latest
+FROM openbxi/centos-pdp:latest
 MAINTAINER "Pierre Vignéras" <pierre.vigneras@atos.net>
 
 ADD RPMS /rpms

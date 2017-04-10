@@ -5,7 +5,7 @@ TARGET_DOCKER_DIR = /tmp/backtrace.docker
 
 backtrace: 
 	echo "Building backtrace rpm"
-	${PWD}/../shared/docker/pdp/mkrpms local/centos-pdp
+	${PWD}/../shared/docker/pdp/mkrpms openbxi/centos-pdp
 	echo "Copying backtrace rpm"
 	mkdir -p ${TARGET_DOCKER_DIR}/RPMS/x86_64
 	cp Dockerfile.centos-backtrace ${TARGET_DOCKER_DIR}
@@ -13,7 +13,7 @@ backtrace:
 	echo "Creating the YUM repo"
 	createrepo ${TARGET_DOCKER_DIR}/RPMS
 	echo "Creating the backtrace docker"
-	docker build --tag local/centos-backtrace \
+	docker build --tag openbxi/centos-backtrace \
 		     --rm=true \
 		     --file ${TARGET_DOCKER_DIR}/Dockerfile.centos-backtrace \
 		     --build-arg HTTP_PROXY=$(http_proxy)\

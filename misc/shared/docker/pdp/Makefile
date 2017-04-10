@@ -2,7 +2,7 @@ all: centos-pdp
 
 centos-pdp: centos-epel
 	echo "Building centos-pdp"
-	docker build --tag local/centos-pdp \
+	docker build --tag openbxi/centos-pdp \
 		     --rm=true \
 		     --file Dockerfile.centos-pdp \
 		     --build-arg HTTP_PROXY=$(http_proxy)\
@@ -18,7 +18,7 @@ centos-pdp: centos-epel
 
 centos-epel:
 	echo "Building centos-epel"
-	docker build --tag local/centos-epel \
+	docker build --tag openbxi/centos-epel \
 		     --rm=true \
 		     --file Dockerfile.centos-epel \
 		     --build-arg HTTP_PROXY=$(http_proxy)\
