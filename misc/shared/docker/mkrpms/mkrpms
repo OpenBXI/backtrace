@@ -98,13 +98,13 @@ if ! docker version > /dev/null; then
     exit 1;
 fi
 
-PDP=$1
+DOCKER_MKRPMS=$1
 shift
-PDP_IMAGE=$(docker images -q ${PDP})
+DOCKER_MKRPMS_IMAGE=$(docker images -q ${DOCKER_MKRPMS})
 
-if [ -z "${PDP_IMAGE}" ]
+if [ -z "${DOCKER_MKRPMS_IMAGE}" ]
 then
-    echo "PDP_IMAGE not found, please make it"
+    echo "DOCKER_MKRPMS_IMAGE not found, please make it"
     exit 1
 fi
 
@@ -112,15 +112,15 @@ fi
 ## Use this one if you want the container to be removed after the command
 CMD="docker run \
     --rm \
-    --name pdp \
-    --hostname pdp \
+    --name mkrpms \
+    --hostname mkrpms \
     --volume $(readlink -f ../../):/mnt:ro \
     --volume ${RPMS_DIR}:/rpms \
     --volume ${TMP_DIR}:/tmp \
     --tty \
     --interactive \
     --user fantom \
-    ${PDP}  \
+    ${DOCKER_MKRPMS}  \
     /bin/bash -li /home/fantom/scripts/mkrpm"
 
 # CMD="docker run \

@@ -1,10 +1,10 @@
-all: centos-pdp
+all: centos-mkrpms
 
-centos-pdp: centos-epel
-	echo "Building centos-pdp"
-	docker build --tag openbxi/centos-pdp \
+centos-mkrpms: centos-epel
+	echo "Building centos-mkrpms"
+	docker build --tag openbxi/centos-mkrpms \
 		     --rm=true \
-		     --file Dockerfile.centos-pdp \
+		     --file Dockerfile.centos-mkrpms \
 		     --build-arg HTTP_PROXY=$(http_proxy)\
 		     --build-arg HTTPS_PROXY=${https_proxy}\
 		     --build-arg FTP_PROXY=${ftp_proxy}\

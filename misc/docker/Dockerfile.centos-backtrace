@@ -1,7 +1,7 @@
-FROM openbxi/centos-pdp:latest
+FROM openbxi/centos-epel:latest
 MAINTAINER "Pierre Vignéras" <pierre.vigneras@atos.net>
 
 ADD RPMS /rpms
 
-RUN sudo -E yum --assumeyes install backtrace*
+RUN yum --assumeyes install backtrace
 

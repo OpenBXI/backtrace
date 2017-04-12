@@ -32,20 +32,21 @@ RUN yum -y install \
 
 # Install git from source and generate the rpm
 RUN cd /tmp && git clone https://github.com/git/git.git && \ 
-    cd /tmp/git && git checkout v2.7.3 && make -j rpm
+    cd /tmp/git && git checkout v2.7.3 && make -j rpm && \
+    rm -rf /tmp/git
 
 # Remove the install git, so we install the version we want
 RUN yum -y remove git-all git && yum clean packages
 
 # Create the yum repo
 RUN cd ~/rpmbuild/RPMS/x86_64 && createrepo . && \
-    echo $'[openbxi] \n\
+    echo $'[git] \n\
 name=Git-Local \n\
 baseurl=file:///root/rpmbuild/RPMS/x86_64 \n\
 enabled=1 \n\
 gpgcheck=0 \n\
 protect=1 \n'\
-> /etc/yum.repos.d/openbxi.repo
+> /etc/yum.repos.d/git.repo
 
 # Install git
 RUN yum -y install git
@@ -58,7 +59,6 @@ RUN useradd -u 1000 -g users -G wheel -m fantom && \
     echo $'%perl_vendorlib /usr/share/perl5/ \n\
 %python2_sitelib /usr/lib/python2.7/site-packages \n\
 %python2_sitearch /usr/lib64/python2.7/site-packages \n\
-%debug_package %{nil} \n\
 %_topdir /rpms \n\
 %systemd_dir /usr/lib/systemd/system \n'\
 > /home/fantom/.rpmmacros
@@ -66,17 +66,6 @@ RUN useradd -u 1000 -g users -G wheel -m fantom && \
 # Trust the wheel groop by default for su & sudo
 RUN sed -i '/^#auth.*pam_wheel.so.*trust /s/^#//' /etc/pam.d/su && \
     echo '%wheel ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
-
-
-# Create the openbxi yum repo
-RUN echo $'[openbxi] \n\
-name=Local \n\
-baseurl=file:///rpms \n\
-enabled=1 \n\
-gpgcheck=0 \n\
-protect=1 \n'\
-> /etc/yum.repos.d/openbxi.repo
-
 
 # Create the user fantom environment
 RUN echo $'export PATH=/home/fantom/scripts:$PATH \n\

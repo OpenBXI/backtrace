@@ -1,0 +1,7 @@
+FROM openbxi/centos-mkrpms:latest
+MAINTAINER "Pierre Vignéras" <pierre.vigneras@atos.net>
+
+ADD RPMS /rpms
+
+RUN sudo yum clean metadata && sudo -E yum --assumeyes install backtrace-devel
+
