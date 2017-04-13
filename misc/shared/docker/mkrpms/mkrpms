@@ -115,7 +115,7 @@ CMD="docker run \
     --name mkrpms \
     --hostname mkrpms \
     --volume $(readlink -f ../../):/mnt:ro \
-    --volume ${RPMS_DIR}:/rpms \
+    --volume ${RPMS_DIR}:/mkrpms_directory \
     --volume ${TMP_DIR}:/tmp \
     --tty \
     --interactive \
@@ -127,7 +127,7 @@ CMD="docker run \
 #     --name pdp \
 #     --hostname pdp \
 #     --volume ${SRC_DIR}:/mnt:ro \
-#     --volume ${RPMS_DIR}:/rpms \
+#     --volume ${RPMS_DIR}:/mkrpms_directory \
 #     --tty \
 #     --interactive \
 #     --user fantom \

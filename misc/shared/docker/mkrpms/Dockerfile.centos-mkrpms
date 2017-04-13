@@ -59,7 +59,7 @@ RUN useradd -u 1000 -g users -G wheel -m fantom && \
     echo $'%perl_vendorlib /usr/share/perl5/ \n\
 %python2_sitelib /usr/lib/python2.7/site-packages \n\
 %python2_sitearch /usr/lib64/python2.7/site-packages \n\
-%_topdir /rpms \n\
+%_topdir /mkrpms_directory \n\
 %systemd_dir /usr/lib/systemd/system \n'\
 > /home/fantom/.rpmmacros
 

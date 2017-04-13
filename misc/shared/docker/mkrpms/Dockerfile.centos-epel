@@ -10,14 +10,14 @@ RUN sed -i 's/enabled=1/enabled=0/' /etc/yum/pluginconf.d/fastestmirror.conf && 
     rpm -iUvh http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-9.noarch.rpm &&  \
     yum --assumeyes update && \
     yum --assumeyes install sudo createrepo && \
-    mkdir -p /rpms && \
-    createrepo /rpms && \
+    mkdir -p /mkrpms_directory && \
+    createrepo /mkrpms_directory && \
     package-cleanup --leaves --all 
 
 # Create the openbxi yum repo
 RUN echo $'[openbxi] \n\
 name=Local \n\
-baseurl=file:///rpms \n\
+baseurl=file:///mkrpms_directory \n\
 enabled=1 \n\
 gpgcheck=0 \n\
 protect=1 \n'\

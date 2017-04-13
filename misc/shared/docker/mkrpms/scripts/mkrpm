@@ -11,5 +11,5 @@ cd ${TMPDIR}
 /mnt/configure && make --jobs --no-print-directory rpm
 #BXI_PDP_MODE="false" make --jobs --no-print-directory --directory /mnt/hpcbxi $1.rpm 
 
-#&& \ su -c "createrepo --update /rpms && yum clean metadata && yum -y install $1-devel"
+#&& \ su -c "createrepo --update /mkrpms_directory && yum clean metadata && yum -y install $1-devel"
 
