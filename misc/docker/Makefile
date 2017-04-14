@@ -1,6 +1,6 @@
 all: backtrace 
 
-MKRPMS_DIR = /mnt/mkrpms
+MKRPMS_DIR := $(shell cat ~/.config/mkrpms.conf|grep RPMS_DIR|cut -d '=' -f 2)
 TARGET_DOCKER_DIR = /tmp/backtrace.docker
 
 backtrace: 
