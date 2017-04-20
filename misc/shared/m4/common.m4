@@ -38,7 +38,7 @@ define([INIT_BXIPRODUCT], [
 	AC_CONFIG_FILES([template_version.py])
 	AM_INIT_AUTOMAKE([foreign subdir-objects])
 
-	if test "$2" == "systemd"
+	if test "$2" = "systemd"
 	then
 		ADD_BXISYSTEMD
 	else
@@ -120,10 +120,10 @@ define([DEFAULT_BXIOPTION],[
 # gcov coverage reporting
 ###########################
     AC_ARG_ENABLE([gcov], [AS_HELP_STRING([--enable-gcov], [use Gcov to test the test suite , default: no])],)
-    if test x"$enable_gcov" == "xyes"; then
-        CFLAGS+=" --coverage"
-        CPPFLAGS+=" --coverage"
-        LDFLAGS+=" --coverage"
+    if test x"$enable_gcov" = "xyes"; then
+        CFLAGS="$CFLAGS --coverage"
+        CPPFLAGS="$CPPFLAGS --coverage"
+        LDFLAGS="$LDFLAGS --coverage"
     else
         enable_gcov=no
     fi
@@ -136,8 +136,8 @@ define([DEFAULT_BXIOPTION],[
     AC_ARG_ENABLE([valgrind], [AS_HELP_STRING([--enable-valgrind[=args]], [use Valgrind to test the test suite])])
     if test x"$enable_valgrind" != "xno"; then
         AC_CHECK_PROG(VALGRIND_CHECK,valgrind,yes)
-        if test x"$VALGRIND_CHECK" == "xyes"; then
-            if test x"$enable_valgrind" == "xyes"; then
+        if test x"$VALGRIND_CHECK" = "xyes"; then
+            if test x"$enable_valgrind" = "xyes"; then
                 enable_valgrind=""
             fi
 
@@ -156,7 +156,7 @@ define([DEFAULT_BXIOPTION],[
         fi
 
     fi
-    if test x"$enable_valgrind" == "xno"; then
+    if test x"$enable_valgrind" = "xno"; then
         enable_valgrind=""
     fi
 
@@ -187,38 +187,38 @@ define([DEFAULT_BXIOPTION],[
             fi
         fi
     fi
-    AM_CONDITIONAL([HAVE_DOXYGEN], [test x"$ENABLE_DOC" == "xyes"])
+    AM_CONDITIONAL([HAVE_DOXYGEN], [test x"$ENABLE_DOC" = "xyes"])
     if test x"$ENABLE_DOC" != "xyes"
     then
         ENABLE_DOC=no
     fi
     AC_ARG_ENABLE([check-doc], [AS_HELP_STRING([--enable-check-doc], [enable the documentation check])])
-    AM_CONDITIONAL([CHECK_DOC], [test x"$enable_check_doc" == "xyes"])
+    AM_CONDITIONAL([CHECK_DOC], [test x"$enable_check_doc" = "xyes"])
 
     AC_ARG_ENABLE([mode-maintaners], [AS_HELP_STRING([--enable-mode-maintaners])])
     if test x"$enable_mode_maintaners" != "xno" ; then
-        CPPFLAGS+=" -Wall -Werror  -Wextra -Wconversion "
+        CPPFLAGS="$CPPFLAGS -Wall -Werror  -Wextra -Wconversion "
     fi
 ###########################
     ])
 define([BXIDISABLE_TESTS],[
     ENABLE_TESTS=yes
     AC_ARG_ENABLE([tests], [AS_HELP_STRING([--disable-tests] , [disable the tests])])
-    if test x"$enable_tests" == "xno"
+    if test x"$enable_tests" = "xno"
     then
         ENABLE_TESTS=no
     fi
-    AM_CONDITIONAL([HAVE_TESTS], [test x"$ENABLE_TESTS" == "xyes"])
+    AM_CONDITIONAL([HAVE_TESTS], [test x"$ENABLE_TESTS" = "xyes"])
     ])
 
 define([BXIDISABLE_PYTHON],[
     ENABLE_PYTHON=yes
     AC_ARG_ENABLE([python], [AS_HELP_STRING([--disable-python] , [disable the pyhon module])])
-    if test x"$enable_python" == "xno"
+    if test x"$enable_python" = "xno"
     then
         ENABLE_PYTHON=no
     fi
-    AM_CONDITIONAL([HAVE_PYTHON], [test x"$ENABLE_PYTHON" == "xyes"])
+    AM_CONDITIONAL([HAVE_PYTHON], [test x"$ENABLE_PYTHON" = "xyes"])
     ])
 
 define([INIT_BXIPYTHON], [
