@@ -25,7 +25,7 @@ LT_INIT
 AM_PROG_CC_C_O
 
 
-AM_CONDITIONAL([HAVE_SYSTEMD], [test "xyes" == "xno"])
+AM_CONDITIONAL([HAVE_SYSTEMD], [test "xyes" = "xno"])
 # Checks for header files.
 AC_CHECK_HEADERS([fcntl.h stddef.h stdint.h stdlib.h string.h unistd.h])
 
