@@ -292,3 +292,15 @@ vcsversion: ${TEST_REVISION}
 	fi
 
 dist:vcsversion
+
+dist_man_MANS = $(patsubst bin/%, doc/man/%.1, ${dist_bin_SCRIPTS})
+
+.PHONY: man_dir
+man_dir:
+	mkdir -p doc/man
+
+${dist_man_MANS}: doc/man/%.1: bin/% man_dir
+	help2man --no-discard-stderr \
+	         --no-info \
+	         --opt-include $(srcdir)/doc/man/$*.include \
+	         $< > $@
