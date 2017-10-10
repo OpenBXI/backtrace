@@ -52,17 +52,13 @@ then
     # Output help and exit before breaking stuff
     printf "Usage: gen_doxydeps.sh DOXYCONF "
     printf "PATH/TO/TAGFILE1 [ PATH/TO/TAGFILE2 ... ]\n\n"
-    if test $1
-    then
-        touch $1
-    fi
+    test -n "$1" && touch $1
     exit
 fi
 
-DOXYCONF=$1 #packaged/doc/Doxygen_specific.in
+DOXYCONF="$1" #packaged/doc/Doxygen_specific.in
 DOXYDIR="$(dirname "$DOXYCONF")"
 shift # Pop first argument
-ARGS=("$@")
 
 # Create Doxyfile with TAGFILES lines
 if test -e "$DOXYCONF"
@@ -70,20 +66,20 @@ then
     echo "$DOXYCONF already exists; deleting it."
     rm "$DOXYCONF"
 fi
-for ARG in "${ARGS[@]}"
+for ARG in "$@"
 do
     TAGFILE="$(echo "$ARG" | sed 's/[ \t]*=[^=]*$//')"
     HTMLDIR="$(echo "$ARG" | sed 's/^[^=]*=[ \t]*//')"
     # If TAGFILE is relative, compute it relative to DOXYDIR
-    echo "$TAGFILE" | grep -q "^/" \
-    || TAGFILE="$( \
-        realpath \
-            --no-symlink \
-            --relative-to="$DOXYDIR" \
-            "$TAGFILE")"
+    if ! echo "$TAGFILE" | grep -q "^/"
+    then
+        TAGFILE="$(realpath --no-symlink \
+                            --relative-to="$DOXYDIR" \
+                            "$TAGFILE")"
+    fi
     # Remove duplicate slashes, but don't interpret / canonicalize
     HTMLDIR="$(echo "$HTMLDIR" | sed "s#//\+#/#g")"
     # Compute path to dep's doc output, relative to current doc output
     echo "TAGFILES += \"$TAGFILE \\" >> "$DOXYCONF"
-    echo "           = $HTMLDIR\""   >> "$DOXYCONF"
+    echo "            =$HTMLDIR\""   >> "$DOXYCONF"
 done
