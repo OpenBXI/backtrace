@@ -6,7 +6,7 @@ node {
 
     stage('Checkout') {
 	echo 'Checkouting..'
-	sh "eval \$(ssh-agent); ssh-add;"
+	sh "eval \$(ssh-agent); ssh-add; ssh-add ~/.ssh/id_git;"
 	checkout scm
     }
 
