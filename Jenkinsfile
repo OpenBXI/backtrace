@@ -1,6 +1,6 @@
 #!/usr/bin/groovy
 node {
-    env.NOSETESTS_ARGS=" --with-xunit --verbose --process-restartworker --process-timeout=60 --xunit-file=$PWD/tests/report/nosetests_junit.xml"
+    env.NOSETESTS_ARGS=" --match=\".*\\.((py)|c)\" --where=$WORKSPACE/tests --with-xunit --verbose --process-restartworker --process-timeout=60 --xunit-file=$PWD/tests/report/nosetests_junit.xml"
     env.NOSETESTS_ARGS="$NOSETESTS_ARGS --with-coverage --cover-xml --cover-xml-file=$WORKSPACE/tests/reportpy_coverage.xml --cover-html --cover-html-dir=$WORKSPACE/tests/report/py_html"
     env.NOSETESTS_ARGS="$NOSETESTS_ARGS --cover-inclusive --cover-package=bxi "
     env.VALGRIND_ARGS="--fair-sched=yes --child-silent-after-fork=yes --tool=memcheck --xml=yes --xml-file=$WORKSPACE/tests/report/valgrind_result.xml"
@@ -46,6 +46,12 @@ node {
     stage('Package') {
 	echo "Packaging.."
 	sh "make devrpm"
+    }
+
+    stage('Archiving') {
+	echo "Archiving.."
+	sh "tar -cf backtrace.tar install"
+	archiveArtifacts 'backtrace.tar'
     }
 
     stage('Report') {
