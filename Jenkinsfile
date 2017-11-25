@@ -74,17 +74,6 @@ node {
 	    junit "tests/report/cppcheck.xml"
 	}
 
-	sh '''
-	FILES="tests/report/valgrind/*"
-	for file in $FILES
-	do
-		NAME=`echo "$file" | cut -d '.' -f1`
-		sed -i 's@valgrind-%p@'"$NAME"'@g' "$file"
-		xsltproc -o "${WORKSPACE}/$NAME".results.xml "/usr/share/citools/valgrind_to_junit.xsl" "$file"
-	done
-	'''
-	junit "tests/report/valgrind/*.results.xml"
-
 	if (fileExists("tests/report/coverage.xml")) {
 	    cobertura autoUpdateHealth: false, autoUpdateStability: false, coberturaReportFile: "**/tests/report/coverage.xml", conditionalCoverageTargets: '70, 0, 0', failNoReports: false, failUnhealthy: false, failUnstable: false, lineCoverageTargets: '80, 0, 0', maxNumberOfBuilds: 0, methodCoverageTargets: '80, 0, 0', onlyStable: false
 	}
