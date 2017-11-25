@@ -13,7 +13,7 @@ node {
 
     stage('Build') {
 	echo 'Building..'
-	sh "sh bootstrap.sh; autoconf; mkdir -p .scanreport; scan-build -k -o .scanbuild -v ./configure --enable-gcov --enable-debug --disable-doc --enable-valgrind=\"$VALGRIND_ARGS\" --prefix=\"$WORKSPACE\"/install"
+	sh "sh bootstrap.sh; mkdir -p .scanreport; scan-build -k -o .scanbuild -v ./configure --enable-gcov --enable-debug --disable-doc --enable-valgrind=\"$VALGRIND_ARGS\" --prefix=\"$WORKSPACE\"/install"
 	sh "scan-build -k -o .scanbuild -v make; cp -rf \$( find .scanbuild -maxdepth 1 -not -empty -not -name '.scanbuild')/* .scanreport/"
 	sh 'rm -rf .scanbuild'
     }
@@ -50,7 +50,7 @@ node {
 
     stage('Archiving') {
 	echo "Archiving.."
-	sh "tar -cf backtrace.tar install"
+	sh "tar -cf backtrace.tar archives"
 	archiveArtifacts 'backtrace.tar'
     }
 
