@@ -47,7 +47,6 @@ node {
     stage('Test') {
 	echo 'Testing..'
 	sh '''
-	. $WORKSPACE/dependencies.sh install
 	make clean check
 	'''
     }
