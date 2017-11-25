@@ -42,17 +42,6 @@ node {
 	echo "Running cppcheck"
 	sh "cppcheck --enable=warning --enable=style --enable=performance --enable=portability --enable=information --enable=missingInclude --template=gcc --std=c99 --xml-version=2 $WORKSPACE/packaged/src/ $WORKSPACE/packaged/include/ 2> tests/report/cppcheck_results.xml && echo 'cppcheck complete' "
 
-	echo "Running pep8"
-	sh "pycodestyle --config $WORKSPACE/misc/shared/pycodestyle.rc -r --statistics --count $WORKSPACE/packaged/lib > pep8.txt || echo 'pep8 complete' "
-	
-	echo "Running pylint"
-    sh '''
-    cd packaged/lib; ls */__init__.py */*/__init__.py > $WORKSPACE/modules.name
-    cd $WORKSPACE
-    sed -i \"s#/__init__.py##\" $WORKSPACE/modules.name
-    sed -i \"s#/#.#g\" $WORKSPACE/modules.name
-    PYTHONPATH=$WORKSPACE/packaged/lib pylint -f parseable --rcfile=$WORKSPACE/misc/shared/pylint.rc \$(cat modules.name) > pylint.txt || echo 'pylint complete'
-    '''
     }
 
     stage('Test') {
@@ -105,7 +94,6 @@ node {
 	if (fileExists("tests/report/coverage.xml")) {
 	    cobertura autoUpdateHealth: false, autoUpdateStability: false, coberturaReportFile: "**/tests/report/coverage.xml", conditionalCoverageTargets: '70, 0, 0', failNoReports: false, failUnhealthy: false, failUnstable: false, lineCoverageTargets: '80, 0, 0', maxNumberOfBuilds: 0, methodCoverageTargets: '80, 0, 0', onlyStable: false
 	}
-	warnings canComputeNew: false, canResolveRelativePaths: false, canRunOnFailed: true, categoriesPattern: '', defaultEncoding: '', excludePattern: '', healthy: '', includePattern: '', messagesPattern: '', parserConfigurations: [[parserName: 'Pep8', pattern: 'pep8.txt'], [parserName: 'PyLint', pattern: 'pylint.txt'], [parserName: 'Doxygen', pattern: '**/packaged/doc/doxygen.warn']], unHealthy: ''
 	sloccountPublish encoding: '', ignoreBuildFailure: true, pattern: 'sloccount.sc'
 	publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '.scanreport', reportFiles: 'index.html', reportName: 'Scan-Build reports', reportTitles: ''])
 	publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'packaged/doc/html', reportFiles: 'index.html', reportName: 'Doxygen reports', reportTitles: ''])
