@@ -46,9 +46,6 @@ node {
 
     stage('Test') {
 	echo 'Testing..'
-	sh '''
-	make clean check
-	'''
     }
 
     stage('Install') {
@@ -68,8 +65,6 @@ node {
     }
 
     stage('Report') {
-	sh "$WORKSPACE/misc/shared/cov_merge.py -o ./tests/report/coverage.xml ./tests/report/py_coverage.xml ./tests/report/c_coverage.xml"
-	sh "sed -i \"s#[/.].libs##g\" ./tests/report/coverage.xml"
 	if (fileExists("tests/report/cunit-Results.xml")) {
 	    sh "xsltproc -o tests/report/cunit.xml /usr/share/citools/cunit_to_junit.xsl tests/report/cunit-Results.xml"
 	    junit "tests/report/cunit.xml"
