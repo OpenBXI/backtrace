@@ -79,7 +79,5 @@ node {
 	}
 	sloccountPublish encoding: '', ignoreBuildFailure: true, pattern: 'sloccount.sc'
 	publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '.scanreport', reportFiles: 'index.html', reportName: 'Scan-Build reports', reportTitles: ''])
-	publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'packaged/doc/html', reportFiles: 'index.html', reportName: 'Doxygen reports', reportTitles: ''])
-    	publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'tests/report/py_html', reportFiles: 'index.html', reportName: 'Nosetests reports', reportTitles: ''])
     }
 }
