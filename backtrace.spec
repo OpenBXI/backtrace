@@ -17,7 +17,7 @@
 # and to understand the SVN tagging process.
 # If you don't care, then, just starts with Bull.1.0%{?dist}.%{?revision}snapshot
 # and run 'make tag' when you want to tag.
-%define release Bull.9.0%{?dist}.%{?revision}snapshot
+%define release Bull.9.1%{?dist}.%{?revision}snapshot
 
 # Warning: Bull's continuous compilation tools refuse the use of
 # %release in the src_dir variable!
@@ -58,7 +58,7 @@ Source:		%{src_tarall}
 Group:		Development/Libraries
 BuildRoot:	%{_tmppath}/%{name}-root
 # Automatically filled in by PDP: it should not appear therefore!
-#Packager:	Bull <help@bull.net>
+#Packager:	BXIHL <bxihl@atos.net>
 Distribution:	Bull HPC
 
 # Automatically filled in by PDP: it should not appear therefore!

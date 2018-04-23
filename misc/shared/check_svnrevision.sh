@@ -1,7 +1,7 @@
 #! /bin/sh
 #
 # check_version.sh
-# Copyright (C) 2012-2016 Bull S.A.S
+# Copyright (C) 2018 Bull S.A.S.
 #
 # Distributed under terms of the BULL license.
 #
