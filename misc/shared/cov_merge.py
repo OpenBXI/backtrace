@@ -43,6 +43,7 @@ def merge(to, *from_files):
     with open(to, 'w') as destinationXML:
         destinationXML.write(etree.tostring(cov, pretty_print=True))
 
+
 if __name__ == '__main__':
     PARSER = argparse.ArgumentParser()
     PARSER.add_argument('--output', '-o', help='Output File; %(default) if not specifyed',

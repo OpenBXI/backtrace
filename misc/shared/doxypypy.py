@@ -622,7 +622,7 @@ class AstWalker(NodeVisitor):
                     linesep,
                     match.group(3),
                     self.lines[lineNum].rstrip()
-                )
+            )
             if self.options.debug:
                 stderr.write("# Attribute {0.id}{1}".format(node.targets[0],
                                                             linesep))
@@ -638,7 +638,7 @@ class AstWalker(NodeVisitor):
                         linesep,
                         restrictionLevel,
                         self.lines[lineNum].rstrip()
-                    )
+                )
         # Visit any contained nodes.
         self.generic_visit(node, containingNodes=kwargs['containingNodes'])
 
@@ -816,7 +816,7 @@ def main():
         )
         parser.add_option_group(group)
 
-        ## Parse options based on our definition.
+        # Parse options based on our definition.
         (options, filename) = parser.parse_args()
 
         # Just abort immediately if we are don't have an input file.
@@ -872,6 +872,7 @@ def main():
     astWalker.parseLines()
     # Output the modified source.
     print(astWalker.getLines())
+
 
 # See if we're running as a script.
 if __name__ == "__main__":
