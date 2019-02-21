@@ -33,8 +33,8 @@ node("any||$BRANCH_NAME") {
         '''
         def deps = env.DNAME.trim().split("\n")
 
-        //stage('Dependencies') {
-        //echo "Checking dependencies..."
+        stage('Dependencies') {
+        echo "Checking dependencies..."
         //sh "rm -rf archives"
         //env.UPSTREAMS = ""
         //for (ii = 0; ii < deps.size(); ii++) {
