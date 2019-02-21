@@ -107,8 +107,6 @@ node("any||$BRANCH_NAME") {
         sh '''
         . $WORKSPACE/dependencies.sh install
         make check
-        cd tests;
-        $WORKSPACE/coverage.sh $WORKSPACE/modules.name $WORKSPACE/tests/report/py_coverage.xml $WORKSPACE
         '''
         }
 
