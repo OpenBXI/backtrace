@@ -33,38 +33,38 @@ node("any||$BRANCH_NAME") {
         '''
         def deps = env.DNAME.trim().split("\n")
 
-        stage('Dependencies') {
-        echo "Checking dependencies..."
-        sh "rm -rf archives"
-        env.UPSTREAMS = ""
-        for (ii = 0; ii < deps.size(); ii++) {
-            env.DNAME = deps[ii]
-            try {
-                copyArtifacts filter: "${DNAME}-${BRANCH_NAME}.tar", fingerprintArtifacts: true, projectName: "${DNAME}/${BRANCH_NAME}", selector: lastSuccessful()
-                env.BRANCH = "${BRANCH_NAME}"
-            } catch (error) {
-                sh """
-                    echo "copyArtifacts returned: $error try with branch develop"
-                   """
-                copyArtifacts filter: "${DNAME}-develop.tar", fingerprintArtifacts: true, projectName: "$DNAME/develop", selector: lastSuccessful()
-                env.BRANCH = "develop"
-            }
-            if (ii != deps.size() -1) {
-                env.UPSTREAMS = "$UPSTREAMS${DNAME}/${BRANCH},"
-            } else {
-                env.UPSTREAMS = "$UPSTREAMS${DNAME}/${BRANCH}"
-            }
-            sh '''
-                tar -xf ${DNAME}-${BRANCH}.tar
-                '''
-        }
-        sh '''
-                rm -rf install /tmp/rpmsdb/${JOB_NAME/\\//-}-rpms
-                mkdir -p  /tmp/rpmsdb
-                rpm -i --force --nodeps --dbpath /tmp/rpmsdb/${JOB_NAME/\\//-}-rpms --relocate /usr=/$PWD/install/ --relocate /etc=$PWD/install/etc archives/*x86_64.rpm
-                mkdir -p tests/report/valgrind
-            '''
-        def UPSTREAMS = env.UPSTREAMS
+        //stage('Dependencies') {
+        //echo "Checking dependencies..."
+        //sh "rm -rf archives"
+        //env.UPSTREAMS = ""
+        //for (ii = 0; ii < deps.size(); ii++) {
+        //    env.DNAME = deps[ii]
+        //    try {
+        //        copyArtifacts filter: "${DNAME}-${BRANCH_NAME}.tar", fingerprintArtifacts: true, projectName: "${DNAME}/${BRANCH_NAME}", selector: lastSuccessful()
+        //        env.BRANCH = "${BRANCH_NAME}"
+        //    } catch (error) {
+        //        sh """
+        //            echo "copyArtifacts returned: $error try with branch develop"
+        //           """
+        //        copyArtifacts filter: "${DNAME}-develop.tar", fingerprintArtifacts: true, projectName: "$DNAME/develop", selector: lastSuccessful()
+        //        env.BRANCH = "develop"
+        //    }
+        //    if (ii != deps.size() -1) {
+        //        env.UPSTREAMS = "$UPSTREAMS${DNAME}/${BRANCH},"
+        //    } else {
+        //        env.UPSTREAMS = "$UPSTREAMS${DNAME}/${BRANCH}"
+        //    }
+        //    sh '''
+        //        tar -xf ${DNAME}-${BRANCH}.tar
+        //        '''
+        //}
+        //sh '''
+        //        rm -rf install /tmp/rpmsdb/${JOB_NAME/\\//-}-rpms
+        //        mkdir -p  /tmp/rpmsdb
+        //        rpm -i --force --nodeps --dbpath /tmp/rpmsdb/${JOB_NAME/\\//-}-rpms --relocate /usr=/$PWD/install/ --relocate /etc=$PWD/install/etc archives/*x86_64.rpm
+        //        mkdir -p tests/report/valgrind
+        //    '''
+        //def UPSTREAMS = env.UPSTREAMS
         echo "Running Sloccount..."
 
         sh "mkdir -p .slocdata; sloccount --datadir .slocdata --wide --details $WORKSPACE/packaged $WORKSPACE/tests $WORKSPACE/misc > sloccount.sc && echo 'sloccount complete' "
@@ -227,13 +227,13 @@ node("any||$BRANCH_NAME") {
 }
 properties([
            disableConcurrentBuilds(),
-           pipelineTriggers([
-                            triggers: [
-                            [
-                            $class: 'jenkins.triggers.ReverseBuildTrigger',
-                            upstreamProjects: UPSTREAMS, threshold: hudson.model.Result.SUCCESS
-                            ]
-                            ]
-           ]),
+           //pipelineTriggers([
+           //                 triggers: [
+           //                 [
+           //                 $class: 'jenkins.triggers.ReverseBuildTrigger',
+           //                 upstreamProjects: UPSTREAMS, threshold: hudson.model.Result.SUCCESS
+           //                 ]
+           //                 ]
+           //]),
     [$class: 'BuildDiscarderProperty', strategy: [$class: 'LogRotator', artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '30']],
 ])
