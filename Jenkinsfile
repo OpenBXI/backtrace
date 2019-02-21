@@ -20,14 +20,6 @@ node("any||$BRANCH_NAME") {
         checkout scm
         }
 
-        env.PNAME = sh returnStdout: true, script: '''
-        cd packaged/lib
-        find . -maxdepth 1 ! -path . ! -path ./.libs -type d | cut -d/ -f2-
-        '''
-        env.PNAME = env.PNAME.trim().trim()
-
-        env.NOSETESTS_ARGS = "$NOSETESTS_ARGS --cover-package=$PNAME"
-
         def cproject = false
         def cfiles = sh returnStatus : true, script: 'ls packaged/src | grep -P ".*\\.c" '
 
