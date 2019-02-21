@@ -124,7 +124,7 @@ node("any||$BRANCH_NAME") {
         echo $(git rev-parse --verify HEAD) > archives/${ANAME}-GIT_COMMIT
 
         tar -cf ${ANAME}_full.tar archives
-        rm archives/*-gpu*
+        rm -f archives/*-gpu*
         tar -cf ${ANAME}.tar archives
         '''
         archiveArtifacts "${ANAME}.tar"
