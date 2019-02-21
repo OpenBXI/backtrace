@@ -100,18 +100,6 @@ node("any||$BRANCH_NAME") {
             echo "Not running cppcheck"
         }
 
-        echo "Running pep8"
-        sh "pycodestyle --config $WORKSPACE/misc/shared/pycodestyle.rc -r --statistics --count $WORKSPACE/packaged/lib > pep8.txt || echo 'pep8 complete' "
-
-        echo "Running pylint"
-        sh '''
-        cd packaged/lib; ls */*/__init__.py > $WORKSPACE/modules.name
-        cd $WORKSPACE
-        sed -i \"s#/__init__.py##\" $WORKSPACE/modules.name
-        sed -i \"s#/#.#g\" $WORKSPACE/modules.name
-        . $WORKSPACE/dependencies.sh install
-        PYTHONPATH=$WORKSPACE/packaged/lib:$PYTHONPATH pylint -f parseable --rcfile=$WORKSPACE/misc/shared/pylint.rc  \$(cat modules.name) > pylint.txt || echo 'pylint complete'
-        '''
         }
 
         stage('Test') {
@@ -196,9 +184,7 @@ node("any||$BRANCH_NAME") {
             healthy: '100',
             includePattern: '',
             messagesPattern: '',
-            parserConfigurations: [[parserName: 'Pep8', pattern: 'pep8.txt'],
-                                   [parserName: 'PyLint', pattern: 'pylint.txt'],
-                                   [parserName: 'cppcheck', pattern: '**/tests/report/cppcheck_results.txt'],
+            parserConfigurations: [[parserName: 'cppcheck', pattern: '**/tests/report/cppcheck_results.txt'],
                                    [parserName: 'Doxygen', pattern: '**/packaged/doc/doxygen.warn']],
             unHealthy: ''
             )
