@@ -131,13 +131,6 @@ node("any||$BRANCH_NAME") {
         archiveArtifacts "${ANAME}_full.tar"
         }
 
-        stage('doc') {
-        echo 'Generate documentation..'
-        sh '''
-        . $WORKSPACE/dependencies.sh install
-        make doc
-        '''
-        }
 
         stage('Report') {
 
@@ -182,8 +175,7 @@ node("any||$BRANCH_NAME") {
             healthy: '100',
             includePattern: '',
             messagesPattern: '',
-            parserConfigurations: [[parserName: 'cppcheck', pattern: '**/tests/report/cppcheck_results.txt'],
-                                   [parserName: 'Doxygen', pattern: '**/packaged/doc/doxygen.warn']],
+            parserConfigurations: [[parserName: 'cppcheck', pattern: '**/tests/report/cppcheck_results.txt'] ],
             unHealthy: ''
             )
 
